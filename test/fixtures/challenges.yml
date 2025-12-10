@@ -1,7 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  owner: one
+  user: one
   title: MyString
   mode: 1
   status: 1
@@ -10,7 +10,7 @@ one:
   capacity: 1
 
 two:
-  owner: two
+  user: two
   title: MyString
   mode: 1
   status: 1
