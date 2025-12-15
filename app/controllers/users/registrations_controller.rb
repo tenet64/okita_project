@@ -39,8 +39,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   protected
-  #コントローラーに記述する、Strong Parametersと同様の働き。
-  #privateの場合は、自分のコントローラ内でしか参照できないが、protectedは呼び出された他のコントローラからも参照できる！
+  # コントローラーに記述する、Strong Parametersと同様の働き。
+  # privateの場合は、自分のコントローラ内でしか参照できないが、protectedは呼び出された他のコントローラからも参照できる！
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
