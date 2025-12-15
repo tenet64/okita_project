@@ -1,8 +1,20 @@
 Rails.application.routes.draw do
-  root "static_pages#top"
-  # root "posts#index"
+  # Devise のログインをトップページにする
+  devise_scope :user do
+    root to: "devise/sessions#new"
+  end
 
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations',
+    passwords: 'users/passwords',
+    confirmations: 'users/confirmations',
+    # unlocks: 'users/unlocks',
+    # omniauth_callbacks: 'users/omniauth_callbacks'
+  }
+  # root "static_pages#top"
+
+  # devise_for :users
   get "posts/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
