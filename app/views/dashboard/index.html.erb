@@ -1,0 +1,42 @@
+<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <div class="max-w-5xl w-full px-6">
+
+    <h1 class="text-2xl font-bold mb-8 text-center">
+      モードを選択してください
+    </h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- ソロモード -->
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <h2 class="text-lg font-semibold mb-2">ソロモード</h2>
+        <p class="text-sm text-gray-600 mb-4">
+          1人で早起きを習慣化
+        </p>
+        <%= link_to "このモードで始める", "#",
+            class: "inline-block bg-orange-400 text-white px-4 py-2 rounded" %>
+      </div>
+
+      <!-- マルチモード -->
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <h2 class="text-lg font-semibold mb-2">マルチモード</h2>
+        <p class="text-sm text-gray-600 mb-4">
+          仲間と一緒に挑戦
+        </p>
+        <%= link_to "このモードで始める", "#",
+            class: "inline-block bg-orange-400 text-white px-4 py-2 rounded" %>
+      </div>
+
+      <!-- バトルモード -->
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <h2 class="text-lg font-semibold mb-2">バトルモード</h2>
+        <p class="text-sm text-gray-600 mb-4">
+          勝負でモチベーションUP
+        </p>
+        <%= link_to "このモードで始める", "#",
+            class: "inline-block bg-orange-400 text-white px-4 py-2 rounded" %>
+      </div>
+
+    </div>
+  </div>
+</div>
