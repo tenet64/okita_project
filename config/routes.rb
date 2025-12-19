@@ -1,18 +1,22 @@
 Rails.application.routes.draw do
-  # Devise のログインをトップページにする
-  devise_scope :user do
-    root to: "devise/sessions#new"
-  end
-
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
     passwords: "users/passwords",
     confirmations: "users/confirmations"
-    # unlocks: 'users/unlocks',
-    # omniauth_callbacks: 'users/omniauth_callbacks'
   }
-  # root "static_pages#top"
+
+  # 未ログイン時の root（ログイン画面）
+  devise_scope :user do
+    unauthenticated :user do
+      root to: "devise/sessions#new", as: :unauthenticated_root
+    end
+  end
+
+  # ログイン後の root（ダッシュボード）
+  authenticated :user do
+    root to: "dashboard#index", as: :authenticated_root
+  end
 
   # devise_for :users
   get "posts/index"
@@ -27,4 +31,7 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   # Defines the root path route ("/")
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 end
