@@ -60,4 +60,4 @@ gem "tailwindcss-rails"
 gem "tailwindcss-ruby", "3.4.17"
 gem "devise"
 gem "rails-i18n"
-gem 'letter_opener_web', '~> 3.0'
+gem "letter_opener_web", "~> 3.0"
