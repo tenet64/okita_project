@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   end
 
   resources :challenges do
-    resources :participations, only: [:create, :destroy]
+    resources :participations, only: [ :create, :destroy ]
   end
   # devise_for :users
   get "posts/index"
