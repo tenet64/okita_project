@@ -1,0 +1,65 @@
+<div class="max-w-2xl mx-auto mt-8">
+
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-bold">チャレンジ一覧</h1>
+
+    <%= link_to "＋ チャレンジ作成",
+          new_challenge_path,
+          class: "px-4 py-2 bg-orange-500 text-white rounded" %>
+  </div>
+
+  <% if @challenges.any? %>
+    <div class="space-y-3">
+      <% @challenges.each do |challenge| %>
+        <div class="border rounded p-4">
+
+          <!-- 上段：タイトル + モード -->
+          <div class="flex justify-between items-start">
+            <div>
+              <!-- タイトル -->
+              <h2 class="font-semibold text-base text-gray-800">
+                <%= challenge.title %>
+              </h2>
+
+              <!-- 作成者 -->
+              <p class="text-xs text-gray-500 mt-1">
+                作成者：<%= challenge.user.name %>
+              </p>
+            </div>
+
+            <span class="text-xs px-2 py-1 rounded
+              <%= challenge.solo? ? 'bg-gray-200' : 'bg-orange-100' %>">
+              <%= challenge.solo? ? "ソロ" : "マルチ" %>
+            </span>
+          </div>
+
+          <!-- 日時 -->
+          <div class="mt-2 text-sm text-gray-700">
+            📅 <%= challenge.target_date %>
+            ⏰ <%= challenge.target_time.strftime("%H:%M") %>
+          </div>
+
+          <!-- マルチ情報 -->
+          <% if challenge.multi? %>
+            <div class="text-sm text-gray-600 mt-1">
+              参加者：
+              <%= challenge.participations.count %>
+              / <%= challenge.capacity %>
+            </div>
+          <% end %>
+
+          <!-- 詳細 -->
+          <div class="mt-3 flex justify-end">
+            <%= link_to "詳細を見る",
+                  challenge_path(challenge),
+                  class: "text-sm text-orange-600 hover:underline" %>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-500">チャレンジがありません</p>
+  <% end %>
+
+</div>

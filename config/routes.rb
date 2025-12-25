@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "participations/create"
+  get "participations/destroy"
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
@@ -18,6 +20,9 @@ Rails.application.routes.draw do
     root to: "dashboard#index", as: :authenticated_root
   end
 
+  resources :challenges do
+    resources :participations, only: [:create, :destroy]
+  end
   # devise_for :users
   get "posts/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
