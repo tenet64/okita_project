@@ -1,59 +1,59 @@
 <header class="bg-[#FDEBD0] border-b border-gray-200">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <!-- ロゴ -->
-    <div class="flex items-center space-x-2">
+
+    <!-- ロゴ + サービス名（トップへ） -->
+    <%= link_to authenticated_root_path, class: "flex items-center space-x-2" do %>
       <%= image_tag "logo.svg",
         class: "h-8 w-8 object-contain",
         alt: "okita ロゴ" %>
 
       <span class="text-xl font-bold text-gray-800">
-       okita!!
+        okita!!
       </span>
-    </div>
+    <% end %>
 
     <!-- ナビゲーション -->
     <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-orange-600">
-      <%= link_to "ソロモード", "#", class: "hover:underline" %>
-      <%= link_to "マルチモード", "#", class: "hover:underline" %>
-      <%= link_to "バトルモード", "#", class: "hover:underline" %>
+      <%= link_to "チャレンジ一覧", challenges_path, class: "hover:underline" %>
       <%= link_to "ランキング", "#", class: "hover:underline" %>
       <%= link_to "マイページ", "#", class: "hover:underline" %>
     </nav>
 
     <!-- ユーザーメニュー -->
     <div
-  class="relative flex items-center"
-  data-controller="dropdown"
-  data-action="click@window->dropdown#close">
+      class="relative flex items-center"
+      data-controller="dropdown"
+      data-action="click@window->dropdown#close">
 
-  <button
-    type="button"
-    class="flex items-center space-x-2 focus:outline-none"
-    data-action="click->dropdown#toggle">
+      <button
+        type="button"
+        class="flex items-center space-x-2 focus:outline-none"
+        data-action="click->dropdown#toggle">
 
-    <span class="hidden md:inline text-sm font-medium text-gray-700">
-      <%= current_user.name %>
-    </span>
-  </button>
+        <span class="hidden md:inline text-sm font-medium text-gray-700">
+          <%= current_user.name %>
+        </span>
+      </button>
 
-  <!-- Dropdown menu -->
-  <div
-    data-dropdown-target="menu"
-    class="hidden absolute right-0 top-12 w-48 rounded-md bg-white shadow-lg border border-gray-100 z-50">
+      <!-- Dropdown menu -->
+      <div
+        data-dropdown-target="menu"
+        class="hidden absolute right-0 top-12 w-48 rounded-md bg-white shadow-lg border border-gray-100 z-50">
 
-    <div class="border-t"></div>
+        <div class="border-t"></div>
 
-    <%= link_to "プロフィール",
-          '#',
-          class: "block px-4 py-2 text-sm hover:bg-orange-50" %>
+        <%= link_to "プロフィール",
+              "#",
+              class: "block px-4 py-2 text-sm hover:bg-orange-50" %>
 
-    <div class="border-t"></div>
+        <div class="border-t"></div>
 
-    <%= link_to "ログアウト",
-          destroy_user_session_path,
-          data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか？" },
-          class: "block px-4 py-2 text-sm text-red-600 hover:bg-red-50" %>
-  </div>
-</div>
+        <%= link_to "ログアウト",
+              destroy_user_session_path,
+              data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか？" },
+              class: "block px-4 py-2 text-sm text-red-600 hover:bg-red-50" %>
+      </div>
+    </div>
+
   </div>
 </header>

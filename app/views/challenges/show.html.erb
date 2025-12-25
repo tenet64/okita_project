@@ -1,0 +1,68 @@
+<div class="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow space-y-6">
+
+  <!-- タイトル -->
+  <div>
+    <h1 class="text-xl font-bold text-gray-800">
+      <%= @challenge.title %>
+    </h1>
+    <p class="text-sm text-gray-500 mt-1">
+      作成者：<%= @challenge.user.name %>
+    </p>
+  </div>
+
+  <!-- 基本情報 -->
+  <div class="space-y-2 text-gray-700">
+    <div>
+      📅 <%= @challenge.target_date %>
+    </div>
+    <div>
+      ⏰ <%= @challenge.target_time.strftime("%H:%M") %>
+    </div>
+    <div>
+      🧩 <%= @challenge.solo? ? "ソロチャレンジ" : "みんなでチャレンジ" %>
+    </div>
+  </div>
+
+  <!-- マルチ参加者 -->
+  <% if @challenge.multi? %>
+    <div>
+      <h2 class="font-semibold mb-2">
+        参加者（<%= @participants.count %> / <%= @challenge.capacity %>）
+      </h2>
+
+      <ul class="text-sm text-gray-700 space-y-1">
+        <% @participants.each do |p| %>
+          <li>・<%= p.user.name %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- アクション -->
+  <div class="pt-4 border-t">
+
+    <% if @challenge.solo? %>
+      <p class="text-sm text-gray-500">
+        このチャレンジはソロ専用です
+      </p>
+
+    <% elsif @joined %>
+      <p class="text-sm text-green-600">
+        ✔ 参加中です
+      </p>
+
+    <% elsif @participants.count < @challenge.capacity %>
+      <%= link_to "参加する",
+            challenge_participations_path(@challenge),
+            data: { turbo_method: :post },
+            class: "block w-full text-center bg-orange-500 text-white py-2 rounded" %>
+
+    <% else %>
+      <p class="text-sm text-red-500">
+        定員に達しています
+      </p>
+    <% end %>
+
+  </div>
+
+</div>
