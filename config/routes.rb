@@ -22,7 +22,9 @@ Rails.application.routes.draw do
 
   resources :challenges do
     resources :participations, only: [ :create, :destroy ]
+    resource :wake_up_log, only: [ :create ]
   end
+  
   # devise_for :users
   get "posts/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

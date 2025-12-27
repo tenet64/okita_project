@@ -1,0 +1,2 @@
+module WakeUpLogsHelper
+end
