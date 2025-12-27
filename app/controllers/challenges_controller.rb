@@ -12,7 +12,7 @@ class ChallengesController < ApplicationController
     # GET /challenges/1
     def show
         @participants = @challenge.participations.includes(:user)
-        # @participation = @participants.find { |p| p.user_id == current_user.user_id }
+      # @participation = @participants.find { |p| p.user_id == current_user.user_id }
     end
 
     # GET /challenges/new
