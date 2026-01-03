@@ -14,6 +14,8 @@ class WakeUpLogsController < ApplicationController
     else
       redirect_to @challenge, alert: "まだ起床判定の時間ではありません"
     end
+
+    head :forbidden unless @challenge.can_wake_up?(current_user)
   end
 
   private

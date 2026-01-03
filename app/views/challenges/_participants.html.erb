@@ -1,0 +1,21 @@
+  <!-- 参加者情報（マルチのみ） -->
+  <% if @challenge.multi? %>
+    <section class="space-y-2">
+      <h2 class="font-semibold text-gray-800">
+        🤝 参加者
+        <span class="text-sm text-gray-500">
+          （<%= @participants.count %> / <%= @challenge.capacity %>）
+        </span>
+      </h2>
+
+      <% if @participants.any? %>
+        <ul class="text-sm text-gray-700 space-y-1">
+          <% @participants.each do |p| %>
+            <li>・<%= p.user.name %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-sm text-gray-500">まだ参加者はいません</p>
+      <% end %>
+    </section>
+  <% end %>

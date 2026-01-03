@@ -2,10 +2,6 @@ class WakeUpLog < ApplicationRecord
   belongs_to :user
   belongs_to :challenge
 
-  after_create :judge_challenge
-
-  private
-  def judge_challenge
-    challenge.judge!
-  end
+  enum status: { success: 0, failure: 1 }
+  validates :user_id, uniqueness: { scope: :challenge_id }
 end

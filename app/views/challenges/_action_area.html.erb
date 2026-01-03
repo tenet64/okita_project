@@ -1,0 +1,79 @@
+<section class="pt-4 border-t space-y-3">
+  <% state = @challenge.action_state_for(current_user) %>
+
+  <% case state %>
+  <% when :recruiting_joined %>
+    <p class="text-sm text-green-600 text-center font-medium">
+      ✔ 参加中です
+    </p>
+
+  <% when :recruiting_can_join %>
+    <%= link_to "このチャレンジに参加する",
+          challenge_participations_path(@challenge),
+          data: { turbo_method: :post },
+          class: "block w-full text-center bg-orange-500 text-white py-2 rounded" %>
+
+  <% when :recruiting_full %>
+    <p class="text-sm text-red-500 text-center">
+      定員に達しています
+    </p>
+
+  <% when :ready_waiting %>
+    <div class="text-center space-y-3">
+      <p class="text-lg font-semibold">
+        ⏰ 起床時間まで待機中
+      </p>
+
+      <p class="text-gray-600">
+        <%= @challenge.target_time.strftime("%H:%M") %>
+        になったら「起きた！」を押してください
+      </p>
+
+      <% if @challenge.wakeup_window_start.present? %>
+        <p class="text-sm text-gray-400">
+          あと <%= distance_of_time_in_words(Time.current, @challenge.wakeup_window_start) %>
+        </p>
+      <% end %>
+
+      <p class="text-xs text-gray-500">
+        成功判定は <%= @challenge.target_time.strftime("%H:%M") %> の前後5分です
+      </p>
+    </div>
+
+  <% when :ready_missed %>
+    <p class="text-sm text-red-700 text-center font-bold">
+      😢 起床時間を過ぎました（失敗）
+    </p>
+
+  <% when :ready_done %>
+    <p class="text-green-600 text-center">
+      ✔ 起床完了
+    </p>
+
+  <% when :ready_can_wake %>
+    <%= link_to "起きた！",
+          challenge_wake_up_logs_path(@challenge),
+          data: { turbo_method: :post },
+          class: "block w-full text-center bg-green-500 text-white py-2 rounded" %>
+
+  <% when :ready_no_permission %>
+    <p class="text-sm text-gray-400 text-center">
+      作成者または参加者のみ実行できます
+    </p>
+
+  <% when :success %>
+    <p class="text-sm text-green-700 text-center font-bold">
+      🎉 チャレンジ成功！
+    </p>
+
+  <% when :failed %>
+    <p class="text-sm text-red-700 text-center font-bold">
+      😢 チャレンジ失敗
+    </p>
+
+  <% else %>
+    <p class="text-sm text-gray-400 text-center">
+      状態を判定できませんでした
+    </p>
+  <% end %>
+</section>

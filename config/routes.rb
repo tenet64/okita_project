@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   resources :challenges do
     resources :participations, only: [ :create, :destroy ]
-    resource :wake_up_log, only: [ :create ]
+    resource :wake_up_logs, only: [ :create ]
   end
 
   # devise_for :users
