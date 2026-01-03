@@ -1,5 +1,6 @@
 class ChallengesController < ApplicationController
     before_action :set_challenge, only: [ :show, :edit, :update, :destroy ]
+    before_action :authenticate_user!, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
 
     # GET /challenges
     def index
@@ -12,7 +13,6 @@ class ChallengesController < ApplicationController
     # GET /challenges/1
     def show
         @participants = @challenge.participations.includes(:user)
-      # @participation = @participants.find { |p| p.user_id == current_user.user_id }
     end
 
     # GET /challenges/new
@@ -26,19 +26,34 @@ class ChallengesController < ApplicationController
 
     # POST /challenges
     def create
-        @challenge = current_user.challenges.build(challenge_params)
+      @challenge = current_user.challenges.build(challenge_params)
 
-        if @challenge.save
-            redirect_to @challenge, notice: "Challenge was successfully created."
-        else
-        render :new
+      ActiveRecord::Base.transaction do
+        # ソロは即 ready
+        if @challenge.solo?
+          @challenge.status = :ready
         end
+
+        @challenge.save!
+
+        # マルチの場合はホストを参加者として登録
+        if @challenge.multi?
+          Participation.create!(
+            user: current_user,
+            challenge: @challenge
+          )
+        end
+      end
+
+      redirect_to @challenge, notice: "チャレンジを作成しました"
+    rescue ActiveRecord::RecordInvalid
+      render :new, status: :unprocessable_entity
     end
 
     # PATCH/PUT /challenges/1
     def update
         if @challenge.update(challenge_params)
-        redirect_to @challenge, notice: "Challenge was successfully updated."
+        redirect_to @challenge, notice: "更新しました"
         else
         render :edit
         end
@@ -47,7 +62,7 @@ class ChallengesController < ApplicationController
     # DELETE /challenges/1
     def destroy
         @challenge.destroy
-        redirect_to challenges_url, notice: "Challenge was successfully destroyed."
+        redirect_to challenges_url, notice: "削除しました"
     end
 
     private

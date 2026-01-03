@@ -26,8 +26,16 @@ ja:
         unconfirmed_email: 未確認Eメール
         unlock_token: ロック解除用トークン
         updated_at: 更新日
+      challenge:
+        title: タイトル
+        target_date: 起床日
+        target_time: 目標時間
+        mode: モード
+        capacity: メンバー
+        status: ステータス
     models:
       user: ユーザー
+      challenge: チャレンジ
   devise:
     confirmations:
       confirmed: メールアドレスが確認できました。
@@ -91,6 +99,7 @@ ja:
       updated: パスワードが正しく変更されました。
       updated_not_active: パスワードが正しく変更されました。
     registrations:
+      signed_up: 登録が完了しました。
       destroyed: アカウントを削除しました。またのご利用をお待ちしております。
       edit:
         are_you_sure: 本当によろしいですか？
@@ -141,4 +150,4 @@ ja:
       not_locked: はロックされていません。
       not_saved:
         one: エラーが発生したため %{resource} は保存されませんでした。
-        other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした。"
+        other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした。"  

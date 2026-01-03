@@ -1,0 +1,23 @@
+  <!-- チャレンジ概要 -->
+  <section class="space-y-2">
+    <h1 class="text-xl font-bold text-gray-800">
+      <%= @challenge.title %>
+    </h1>
+
+    <p class="text-sm text-gray-500">
+      作成者：<%= @challenge.user.name %>
+    </p>
+  </section>
+
+
+  <!-- 基本情報 -->
+  <section class="bg-gray-50 rounded p-4 space-y-2 text-sm text-gray-700">
+    <div>📅 <%= @challenge.target_date %></div>
+    <div>⏰ <%= @challenge.target_time.strftime("%H:%M") %></div>
+    <div>
+      🧩
+      <span class="font-medium">
+        <%= @challenge.solo? ? "ソロチャレンジ" : "みんなでチャレンジ" %>
+      </span>
+    </div>
+  </section>
