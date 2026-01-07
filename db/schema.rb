@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_25_144220) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,7 +33,22 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_25_144220) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["challenge_id"], name: "index_participations_on_challenge_id"
+    t.index ["user_id", "challenge_id"], name: "index_participations_on_user_id_and_challenge_id", unique: true
     t.index ["user_id"], name: "index_participations_on_user_id"
+  end
+
+  create_table "point_transactions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "points", default: 0, null: false
+    t.integer "reason", null: false
+    t.string "source_type", null: false
+    t.bigint "source_id", null: false
+    t.date "target_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_type", "source_id"], name: "index_point_transactions_on_source"
+    t.index ["user_id", "reason", "source_type", "source_id", "target_date"], name: "idx_point_tx_unique_grant", unique: true
+    t.index ["user_id"], name: "index_point_transactions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -59,12 +74,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_25_144220) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["challenge_id"], name: "index_wake_up_logs_on_challenge_id"
+    t.index ["user_id", "challenge_id", "target_date"], name: "index_wake_up_logs_on_user_id_and_challenge_id_and_target_date", unique: true
     t.index ["user_id"], name: "index_wake_up_logs_on_user_id"
   end
 
   add_foreign_key "challenges", "users"
   add_foreign_key "participations", "challenges"
   add_foreign_key "participations", "users"
+  add_foreign_key "point_transactions", "users"
   add_foreign_key "wake_up_logs", "challenges"
   add_foreign_key "wake_up_logs", "users"
 end
