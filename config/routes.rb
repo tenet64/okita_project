@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get "participations/create"
   get "participations/destroy"
+  get "/mypage", to: "mypages#show", as: :mypage
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",

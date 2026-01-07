@@ -1,6 +1,6 @@
 class Challenge < ApplicationRecord
-  enum mode: { solo: 1, multi: 2 }
-  enum status: {
+  enum :mode, { solo: 1, multi: 2 }
+  enum :status, {
     recruiting: 0,
     ready: 1,
     success: 2,
@@ -8,6 +8,7 @@ class Challenge < ApplicationRecord
   }
   belongs_to :user
   has_many :participations, dependent: :destroy
+  has_many :participants, through: :participations, source: :user
   has_many :wake_up_logs, dependent: :destroy
 
   validates :title, presence: true
@@ -146,6 +147,13 @@ class Challenge < ApplicationRecord
     end
 
     :unknown
+  end
+
+  # ソロ: ホストのみ / マルチ: ホスト + 参加者
+  def members
+    return [ user ] if solo?
+
+    ([ user ] + participants.to_a).uniq
   end
 
   private

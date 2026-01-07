@@ -4,7 +4,6 @@ class Participation < ApplicationRecord
 
   validate :challenge_not_full
   validates :user_id, uniqueness: { scope: :challenge_id }
-  validate :challenge_not_full
 
   after_create :mark_challenge_ready_if_filled
 

@@ -1,0 +1,71 @@
+<div class="max-w-2xl mx-auto mt-8 bg-white p-6 rounded-lg shadow">
+  <h1 class="text-xl font-bold mb-4">起床ログ</h1>
+
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+    <div class="border rounded-lg p-4 bg-gray-50">
+      <div class="text-xs text-gray-500">現在のポイント</div>
+      <div class="mt-1 flex items-end gap-2">
+        <div class="text-3xl font-bold"><%= @points %></div>
+        <div class="text-sm text-gray-600">pt</div>
+      </div>
+      <div class="mt-2 text-xs text-gray-500">（成功ログ 1回 = 1pt）</div>
+    </div>
+
+    <div class="border rounded-lg p-4 bg-gray-50">
+      <div class="text-xs text-gray-500">現在のストリーク</div>
+      <div class="mt-1 flex items-end gap-2">
+        <div class="text-3xl font-bold"><%= @current_streak %></div>
+        <div class="text-sm text-gray-600">日</div>
+      </div>
+      <div class="mt-2 text-xs text-gray-500">最長：<%= @longest_streak %>日</div>
+    </div>
+
+
+    <div class="border rounded-lg p-4 bg-gray-50">
+      <div class="text-xs text-gray-500">今週（月〜日）成功率</div>
+      <div class="mt-1 flex items-end gap-2">
+        <div class="text-3xl font-bold"><%= @attempts_week.to_i.zero? ? '--' : @success_rate_week %></div>
+        <div class="text-sm text-gray-600">%</div>
+      </div>
+      <div class="mt-2 text-xs text-gray-500"><%= @successes_week %> / <%= @attempts_week %> 回 成功</div>
+    </div>
+
+    <div class="border rounded-lg p-4 bg-gray-50">
+      <div class="text-xs text-gray-500">直近7日 平均起床時刻</div>
+      <div class="mt-1 flex items-end gap-2">
+        <div class="text-3xl font-bold"><%= @avg_wake_time_7d || '--:--' %></div>
+      </div>
+      <div class="mt-2 text-xs text-gray-500">（記録がある日の最初の押下）</div>
+    </div>
+  </div>
+
+  <% if @wake_up_logs.any? %>
+    <div class="space-y-3">
+      <% @wake_up_logs.each do |log| %>
+        <div class="border rounded p-4">
+          <div class="font-semibold text-gray-800">
+            <%= log.challenge.title %>
+          </div>
+
+          <div class="text-sm text-gray-600 mt-1">
+            📅 <%= log.challenge.target_date %>
+            ⏰ <%= log.challenge.target_time.strftime("%H:%M") %>
+          </div>
+
+          <div class="text-sm mt-2">
+            押した時刻：<%= l(log.pressed_at, format: :short) %>
+          </div>
+
+          <div class="text-sm mt-1">
+            結果：
+            <span class="<%= log.success? ? 'text-green-600' : 'text-red-600' %> font-semibold">
+              <%= log.status %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-500">まだ起床ログがありません</p>
+  <% end %>
+</div>
