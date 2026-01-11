@@ -9,3 +9,6 @@ application.register("dropdown", DropdownController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import CountdownController from "./countdown_controller"
+application.register("countdown", CountdownController)

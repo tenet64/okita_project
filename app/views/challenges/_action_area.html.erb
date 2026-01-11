@@ -21,22 +21,38 @@
   <% when :ready_waiting %>
     <div class="text-center space-y-3">
       <p class="text-lg font-semibold">
-        ⏰ 起床時間まで待機中
+        ⏰ 起床時間まで残り
       </p>
 
-      <p class="text-gray-600">
-        <%= @challenge.target_time.strftime("%H:%M") %>
-        になったら「起きた！」を押してください
-      </p>
-
-      <% if @challenge.wakeup_window_start.present? %>
-        <p class="text-sm text-gray-400">
-          あと <%= distance_of_time_in_words(Time.current, @challenge.wakeup_window_start) %>
-        </p>
-      <% end %>
+      <% if @challenge.target_at.present? %>
+      <div
+        class="mt-4 flex justify-center gap-4"
+        data-controller="countdown"
+        data-countdown-target-at-value="<%= @challenge.target_at.iso8601 %>"
+      >
+        <div class="text-center">
+          <div data-countdown-target="days" class="text-3xl font-bold">00</div>
+          <div class="text-xs text-gray-500">日</div>
+        </div>
+        <div class="text-center">
+          <div data-countdown-target="hours" class="text-3xl font-bold">00</div>
+          <div class="text-xs text-gray-500">時間</div>
+        </div>
+        <div class="text-center">
+          <div data-countdown-target="minutes" class="text-3xl font-bold">00</div>
+          <div class="text-xs text-gray-500">分</div>
+        </div>
+        <div class="text-center">
+          <div data-countdown-target="seconds" class="text-3xl font-bold">00</div>
+          <div class="text-xs text-gray-500">秒</div>
+        </div>
+      </div>
+    <% end %>
 
       <p class="text-xs text-gray-500">
         成功判定は <%= @challenge.target_time.strftime("%H:%M") %> の前後5分です
+        <br>
+        （起床時間の5分前から起床ボタンが出現します）
       </p>
     </div>
 

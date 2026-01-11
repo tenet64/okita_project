@@ -54,10 +54,15 @@
                   challenge_path(challenge),
                   class: "text-sm text-orange-600 hover:underline" %>
           </div>
-
-          <!-- 削除ボタン -->
+          
+          <!-- 編集・削除ボタン -->
           <% if current_user == challenge.user %>
-            <div class="mt-2 flex justify-end">
+          <div class="mt-2 flex justify-end">
+            <%= link_to "チャレンジを編集する",
+                  edit_challenge_path(challenge),
+                  class: "text-sm text-blue-600 hover:underline" %>
+
+            <span class="mx-2 text-gray-400">|</span>
               <%= link_to "チャレンジを削除する",
                     challenge_path(challenge),
                     data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
