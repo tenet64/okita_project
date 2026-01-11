@@ -3,7 +3,7 @@ class ChallengesController < ApplicationController
     before_action :authenticate_user!, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
     before_action :correct_challenge, only: [ :edit, :update, :destroy ]
 
-    # GET /challenges
+   # GET /challenges
    def index
      now = Time.zone.now
 
@@ -98,5 +98,4 @@ class ChallengesController < ApplicationController
       redirect_to authenticated_root_path
       end
     end
-
 end
