@@ -1,0 +1,36 @@
+<div class="min-h-screen bg-gray-50 py-10 px-4">
+  <div class="max-w-md mx-auto bg-white rounded-2xl shadow-sm p-6">
+<%= form_with model: @user, url: profile_path, method: :patch, local: true do |form| %>
+
+  <% if @user.errors.any? %>
+    <div class="mb-4 text-sm text-red-600">
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li>• <%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- ユーザー名 -->
+  <div class="mb-4">
+    <%= form.label :name, "ユーザー名", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.text_field :name,
+          class: "w-full rounded border-gray-300 focus:border-orange-400 focus:ring-orange-400" %>
+  </div>
+
+  <!-- メールアドレス -->
+  <div class="mb-6">
+    <%= form.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.email_field :email,
+          class: "w-full rounded border-gray-300 focus:border-orange-400 focus:ring-orange-400" %>
+  </div>
+
+  <!-- 送信 -->
+  <div>
+    <%= form.submit "プロフィールを更新する",
+          class: "w-full text-center px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition" %>
+  </div>
+<% end %>
+  </div>
+</div>

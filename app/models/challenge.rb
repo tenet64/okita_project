@@ -26,6 +26,20 @@ class Challenge < ApplicationRecord
 
   before_validation :clear_capacity_for_solo
 
+  # 目標日時（Time）を返す
+  def target_at
+    return nil if target_date.blank? || target_time.blank?
+
+    Time.zone.local(
+      target_date.year,
+      target_date.month,
+      target_date.day,
+      target_time.hour,
+      target_time.min,
+      target_time.sec
+    )
+  end
+
   def target_datetime
     return nil if target_date.blank? || target_time.blank?
     Time.zone.local(
