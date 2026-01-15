@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     resource :wake_up_logs, only: [ :create ]
   end
 
+  resource :profile, only: %i[show edit update]
+
   # devise_for :users
   get "posts/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
