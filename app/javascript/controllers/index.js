@@ -12,3 +12,9 @@ application.register("hello", HelloController)
 
 import CountdownController from "./countdown_controller"
 application.register("countdown", CountdownController)
+
+import DatetimeMinController from "./datetime_min_controller"
+application.register("datetime-min", DatetimeMinController)
+
+import ModeCapacityController from "./mode_capacity_controller"
+application.register("mode-capacity", ModeCapacityController)

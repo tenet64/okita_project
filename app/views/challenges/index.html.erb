@@ -21,6 +21,22 @@
                 <%= challenge.title %>
               </h2>
 
+            <% if challenge.multi? %>
+              <p class="mt-1 text-sm text-gray-600">
+                参加者: <%= challenge.participations.size %> / <%= challenge.capacity %>
+              </p>
+            <% end %>
+
+              <% if challenge.success? %>
+              <span class="px-2 py-0.5 text-xs font-semibold text-green-700 bg-green-100 rounded">
+                成功
+              </span>
+            <% elsif challenge.failed? %>
+              <span class="px-2 py-0.5 text-xs font-semibold text-red-700 bg-red-100 rounded">
+                失敗
+              </span>
+            <% end %>
+
               <!-- 作成者 -->
               <p class="text-xs text-gray-500 mt-1">
                 作成者：<%= challenge.user.name %>
@@ -43,7 +59,7 @@
           <% if challenge.multi? %>
             <div class="text-sm text-gray-600 mt-1">
               参加者：
-              <%= challenge.participations.count %>
+              <%= challenge.participations.size %>
               / <%= challenge.capacity %>
             </div>
           <% end %>
@@ -54,26 +70,25 @@
                   challenge_path(challenge),
                   class: "text-sm text-orange-600 hover:underline" %>
           </div>
-          
-          <!-- 編集・削除ボタン -->
-          <% if current_user == challenge.user %>
-          <div class="mt-2 flex justify-end">
-            <%= link_to "チャレンジを編集する",
-                  edit_challenge_path(challenge),
-                  class: "text-sm text-blue-600 hover:underline" %>
 
-            <span class="mx-2 text-gray-400">|</span>
+          <!-- 編集・削除ボタン（作成者のみ & 未成功のみ） -->
+          <% if current_user == challenge.user && !challenge.success? && !challenge.failed? %>
+              <%= link_to "チャレンジを編集する",
+                    edit_challenge_path(challenge),
+                    class: "text-sm text-blue-600 hover:underline" %>
+
+              <span class="mx-2 text-gray-400">|</span>
+
               <%= link_to "チャレンジを削除する",
                     challenge_path(challenge),
                     data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
                     class: "text-sm text-red-600 hover:underline" %>
-            </div>
           <% end %>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-gray-500">チャレンジがありません</p>
+    <p class="text-gray-500">募集中・進行中のチャレンジがありません</p>
   <% end %>
 
 </div>

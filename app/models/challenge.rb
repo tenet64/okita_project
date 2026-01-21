@@ -14,6 +14,7 @@ class Challenge < ApplicationRecord
   validates :title, presence: true
   validates :target_date, presence: true
   validates :target_time, presence: true
+  validate :target_datetime_cannot_be_in_the_past
 
   validates :capacity, presence: true, if: :multi?
   validates :capacity,
@@ -41,15 +42,7 @@ class Challenge < ApplicationRecord
   end
 
   def target_datetime
-    return nil if target_date.blank? || target_time.blank?
-    Time.zone.local(
-      target_date.year,
-      target_date.month,
-      target_date.day,
-      target_time.hour,
-      target_time.min,
-      target_time.sec
-    )
+    target_at
   end
 
   # 起床成功判定ウィンドウ（±5分）
@@ -163,6 +156,10 @@ class Challenge < ApplicationRecord
     :unknown
   end
 
+  def solo_challgenge?
+  end
+
+
   # ソロ: ホストのみ / マルチ: ホスト + 参加者
   def members
     return [ user ] if solo?
@@ -170,7 +167,56 @@ class Challenge < ApplicationRecord
     ([ user ] + participants.to_a).uniq
   end
 
+# 起床ログを元にチャレンジ全体の状態を更新する
+# - ソロ: ホストが success → success
+# - マルチ: 1人でも failure → failed
+# - マルチ: 全員 success → success
+def refresh_status_by_logs!(date: target_date)
+  return if date.blank?
+  return unless ready? || recruiting?
+
+  if solo?
+    if wake_up_logs.exists?(user_id: user_id, target_date: date, status: :success)
+      update!(status: :success)
+    elsif wake_up_logs.exists?(user_id: user_id, target_date: date, status: :failure)
+      update!(status: :failed)
+    end
+    return
+  end
+
+  # マルチの場合
+  member_ids = members.map(&:id)
+
+  # 1人でも失敗があれば failed
+  if wake_up_logs.where(user_id: member_ids, target_date: date, status: :failure).exists?
+    update!(status: :failed)
+    return
+  end
+
+  # 全員成功していれば success
+  success_user_ids =
+    wake_up_logs
+      .where(user_id: member_ids, target_date: date, status: :success)
+      .distinct
+      .pluck(:user_id)
+
+  if (member_ids - success_user_ids).empty?
+    update!(status: :success)
+  end
+end
+
   private
+
+  def target_datetime_cannot_be_in_the_past
+    return if target_at.blank?
+
+    # 新規作成時、または起床日/起床時間を変更したときだけチェックする
+    return unless new_record? || will_save_change_to_target_date? || will_save_change_to_target_time?
+
+    if target_at < Time.zone.now
+      errors.add(:target_time, "は現在時刻より後を選択してください")
+    end
+  end
 
   def clear_capacity_for_solo
     self.capacity = nil if solo?
