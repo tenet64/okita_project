@@ -9,6 +9,7 @@ class WakeUpLog < ApplicationRecord
 
   # ログ作成後にポイント付与を試みる（成功ログのみ）
   after_commit :grant_points, on: :create
+  after_commit :refresh_challenge_status, on: :create
   before_validation :set_target_date, on: :create
 
   private
@@ -68,5 +69,9 @@ class WakeUpLog < ApplicationRecord
     rescue ActiveRecord::RecordNotUnique
       # すでに付与済みなら次へ
     end
+  end
+
+  def refresh_challenge_status
+    challenge.refresh_status_by_logs!(date: target_date)
   end
 end

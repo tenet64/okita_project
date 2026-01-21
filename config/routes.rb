@@ -18,7 +18,8 @@ Rails.application.routes.draw do
 
   # ログイン後の root（ダッシュボード）
   authenticated :user do
-    root to: "dashboard#index", as: :authenticated_root
+    root to: "challenges#index", as: :authenticated_root
+    get "dashboard", to: "dashboard#index", as: :dashboard
   end
 
   resources :challenges do
