@@ -6,6 +6,7 @@ class Challenge < ApplicationRecord
     success: 2,
     failed: 3
   }
+
   belongs_to :user
   has_many :participations, dependent: :destroy
   has_many :participants, through: :participations, source: :user
@@ -41,63 +42,69 @@ class Challenge < ApplicationRecord
     )
   end
 
-  def target_datetime
-    target_at
-  end
-
   # 起床成功判定ウィンドウ（±5分）
   def wakeup_window_start
-    td = target_datetime
+    td = target_at
     td&.advance(minutes: -5)
   end
 
   def wakeup_window_end
-    td = target_datetime
+    td = target_at
     td&.advance(minutes: 5)
   end
 
   # 「起きた！」を押して成功判定できる時間帯（±5分の間）
   def wakeup_available?
     return false unless ready?
+
     ws = wakeup_window_start
     we = wakeup_window_end
     return false if ws.blank? || we.blank?
+
     Time.current.between?(ws, we)
   end
 
   # 起床ウィンドウ開始前（早すぎ）
   def waiting_for_wakeup?
     return false unless ready?
+
     ws = wakeup_window_start
     return false if ws.blank?
+
     Time.current < ws
   end
 
   # 起床ウィンドウ終了後（押しそびれ）
   def wakeup_missed?
     return false unless ready?
+
     we = wakeup_window_end
     return false if we.blank?
+
     Time.current > we
   end
 
   def capacity_available?
     return false if capacity.blank?
+
     participations.count < capacity
   end
 
   def wake_up_done?(user)
     return false if user.blank?
+
     wake_up_logs.exists?(user: user)
   end
 
   def host?(user)
     return false if user.blank?
+
     user_id == user.id
   end
 
   def participant?(user)
     return false if user.blank?
+
     participations.exists?(user: user)
   end
 
@@ -107,6 +114,7 @@ class Challenge < ApplicationRecord
     return false unless multi?
     return false if host?(user) # ホストは作成時に自動参加させる前提
     return false if participant?(user)
+
     capacity_available?
   end
 
@@ -156,54 +164,71 @@ class Challenge < ApplicationRecord
     :unknown
   end
 
-  def solo_challgenge?
-  end
-
-
   # ソロ: ホストのみ / マルチ: ホスト + 参加者
   def members
-    return [ user ] if solo?
+    return [user] if solo?
 
-    ([ user ] + participants.to_a).uniq
+    ([user] + participants.to_a).uniq
   end
 
-# 起床ログを元にチャレンジ全体の状態を更新する
-# - ソロ: ホストが success → success
-# - マルチ: 1人でも failure → failed
-# - マルチ: 全員 success → success
-def refresh_status_by_logs!(date: target_date)
-  return if date.blank?
-  return unless ready? || recruiting?
+  # 削除は起床時刻の60分前まで
+  def destroyable?
+    ta = target_at
+    return false if ta.blank?
 
-  if solo?
-    if wake_up_logs.exists?(user_id: user_id, target_date: date, status: :success)
+    Time.zone.now < ta - 60.minutes
+  end
+
+  # 判定締切（起床時刻 + 猶予）。MVP は 5分猶予。
+  def judge_deadline_at
+    ta = target_at
+    return nil if ta.blank?
+
+    ta + 5.minutes
+  end
+
+  # 起床ログを元にチャレンジ全体の状態を更新する
+  # - 期限前: 全員成功なら success（途中は ready のまま）
+  # - 期限後: 押していないメンバーに failure ログを自動作成し、failed を確定
+  def refresh_status_by_logs!(date: target_date)
+    return if date.blank?
+    return if success? || failed?
+    return unless ready?
+
+    member_ids = members.map(&:id)
+
+    # 先に「全員成功なら success」を確定（期限前でもOK）
+    success_user_ids =
+      wake_up_logs
+        .where(user_id: member_ids, target_date: date, status: :success)
+        .distinct
+        .pluck(:user_id)
+
+    if (member_ids - success_user_ids).empty?
       update!(status: :success)
-    elsif wake_up_logs.exists?(user_id: user_id, target_date: date, status: :failure)
+      return
+    end
+
+    # 期限前はここで終了（失敗確定はしない）
+    deadline = judge_deadline_at
+    return if deadline.blank? || Time.zone.now < deadline
+
+    # 期限後: 押していないメンバーに failure ログを作って failed を確定
+    missing_ids = member_ids - success_user_ids
+
+    ApplicationRecord.transaction do
+      missing_ids.each do |uid|
+        WakeUpLog.find_or_create_by!(user_id: uid, challenge_id: id, target_date: date) do |log|
+          log.status = :failure
+          log.pressed_at = nil
+        end
+      rescue ActiveRecord::RecordNotUnique
+        # 競合したら無視
+      end
+
       update!(status: :failed)
     end
-    return
   end
-
-  # マルチの場合
-  member_ids = members.map(&:id)
-
-  # 1人でも失敗があれば failed
-  if wake_up_logs.where(user_id: member_ids, target_date: date, status: :failure).exists?
-    update!(status: :failed)
-    return
-  end
-
-  # 全員成功していれば success
-  success_user_ids =
-    wake_up_logs
-      .where(user_id: member_ids, target_date: date, status: :success)
-      .distinct
-      .pluck(:user_id)
-
-  if (member_ids - success_user_ids).empty?
-    update!(status: :success)
-  end
-end
 
   private
 

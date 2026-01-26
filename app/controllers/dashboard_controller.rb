@@ -26,5 +26,11 @@ class DashboardController < ApplicationController
       )
       .distinct
       .order(:target_date, :target_time)
+
+    def refresh_challenge_statuses!
+      (@today_challenges + @upcoming_challenges).each do |c|
+      c.refresh_status_by_logs!(date: c.target_date)
+      end
+    end
   end
 end

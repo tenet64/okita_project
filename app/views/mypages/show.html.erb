@@ -53,7 +53,9 @@
           </div>
 
           <div class="text-sm mt-2">
-            押した時刻：<%= l(log.pressed_at, format: :short) %>
+            <% if log.pressed_at.present? %>
+              押した時刻：<%= l(log.pressed_at, format: :short) %>
+            <% end %>
           </div>
 
           <div class="text-sm mt-1">

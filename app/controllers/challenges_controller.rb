@@ -2,24 +2,26 @@ class ChallengesController < ApplicationController
     before_action :set_challenge, only: [ :show, :edit, :update, :destroy ]
     before_action :authenticate_user!, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
     before_action :correct_challenge, only: [ :edit, :update, :destroy ]
+    before_action :prevent_destroy_if_close, only: [ :destroy ]
+
    # GET /challenges
    def index
      now = Time.zone.now
 
-    @challenges = Challenge
-    .includes(:participations, :user)
-    .where(
-      "(target_date > :today) OR (target_date = :today AND target_time >= :current_time)",
-      today: now.to_date,
-      current_time: now.strftime("%H:%M:%S")
-    )
-    .where.not(user_id: current_user.id, mode: :solo, status: :success)
-    .order(:target_date, :target_time)
+    @challenges = Challenge.all
+    # .includes(:participations, :user)
+    # .where(
+    #   "(target_date > :today) OR (target_date = :today AND target_time >= :current_time)",
+    #   today: now.to_date
+    #   # current_time: now.strftime("%H:%M:%S")
+    # )
+    # .order(:target_date, :target_time)
    end
 
     # GET /challenges/1
     def show
         @participants = @challenge.participations.includes(:user)
+        @challenge.refresh_status_by_logs!(date: @challenge.target_date)
     end
 
     # GET /challenges/new
@@ -91,6 +93,24 @@ class ChallengesController < ApplicationController
     def correct_challenge
       unless @challenge.user_id == current_user.id
         redirect_to authenticated_root_path
+      end
+    end
+
+    def prevent_destroy_if_close
+      # target_date + target_time から起床時刻を作る
+      target_at =
+        Time.zone.local(
+      @challenge.target_date.year,
+      @challenge.target_date.month,
+      @challenge.target_date.day,
+      @challenge.target_time.hour,
+      @challenge.target_time.min
+    )
+
+      # 60分を切っていたら削除不可
+      if Time.zone.now >= target_at - 60.minutes
+        redirect_to challenge_path(@challenge),
+                    alert: "起床時刻の60分前を過ぎているため、このチャレンジは削除できません"
       end
     end
 end
