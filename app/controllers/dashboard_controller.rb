@@ -7,6 +7,7 @@ class DashboardController < ApplicationController
     # ① 今日のチャレンジ（自分が関係しているもの）
     @today_challenges = Challenge
     .left_joins(:participations)
+    
     .where(target_date: today)
     .where(status: %i[recruiting ready])
     .where(
@@ -27,10 +28,12 @@ class DashboardController < ApplicationController
       .distinct
       .order(:target_date, :target_time)
 
-    def refresh_challenge_statuses!
-      (@today_challenges + @upcoming_challenges).each do |c|
+    refresh_challenge_status!
+  end
+
+  def refresh_challenge_status!
+    (@today_challenges + @upcoming_challenges).each do |c|
       c.refresh_status_by_logs!(date: c.target_date)
-      end
     end
   end
 end

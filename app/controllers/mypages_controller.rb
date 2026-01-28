@@ -37,13 +37,12 @@ class MypagesController < ApplicationController
     ((today - 120)..today).each do |d|
       if daily_success[d]
         run += 1
-        longest = [ longest, run ].max
+        longest = [longest, run].max
       else
         run = 0
       end
     end
     @longest_streak = longest
-
 
     # 今週（月〜日）の成功率（挑戦回数を母数にする）
     week_start = today.beginning_of_week(:monday)

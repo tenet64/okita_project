@@ -64,7 +64,16 @@
               <%= log.status %>
             </span>
           </div>
+         <!-- 操作（詳細 / 削除） -->
+          <div class="mt-4 flex items-center justify-end gap-4">
+            <%= link_to "詳細を見る",
+                  challenge_path(log.challenge),
+                  class: "text-sm font-medium text-orange-600 hover:underline" %>
+          </div>
+
         </div>
+
+
       <% end %>
     </div>
   <% else %>

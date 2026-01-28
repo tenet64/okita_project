@@ -5,7 +5,7 @@
   <% case state %>
   <% when :recruiting_joined %>
     <p class="text-sm text-green-600 text-center font-medium">
-      ✔ 参加中です
+      ✔ 参加中です。メンバーが揃うまでお待ちください。
     </p>
 
   <% when :recruiting_can_join %>
@@ -19,7 +19,7 @@
       定員に達しています
     </p>
 
-  <% when :ready_waiting %>
+  <% when :ready_waiting, :recruiting_waiting %>
     <div class="text-center space-y-3">
       <p class="text-lg font-semibold">
         ⏰ 起床時間まで残り
@@ -86,11 +86,6 @@
   <% when :failed %>
     <p class="text-sm text-red-700 text-center font-bold">
       😢 チャレンジ失敗
-    </p>
-
-  <% else %>
-    <p class="text-sm text-gray-400 text-center">
-      状態を判定できませんでした
     </p>
   <% end %>
 </section>

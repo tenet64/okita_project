@@ -8,19 +8,20 @@ class ChallengesController < ApplicationController
    def index
      now = Time.zone.now
 
-    @challenges = Challenge.all
-    # .includes(:participations, :user)
-    # .where(
-    #   "(target_date > :today) OR (target_date = :today AND target_time >= :current_time)",
-    #   today: now.to_date
-    #   # current_time: now.strftime("%H:%M:%S")
-    # )
-    # .order(:target_date, :target_time)
+    @challenges = Challenge
+    .includes(:participations, :user)
+    .where(
+      "(target_date > :today) OR (target_date = :today AND target_time >= :current_time)",
+      today: now.to_date,
+      current_time: now.strftime("%H:%M:%S")
+    )
+    .order(:target_date, :target_time)
    end
 
     # GET /challenges/1
     def show
         @participants = @challenge.participations.includes(:user)
+        @challenge.finalize_recruiting_if_due!
         @challenge.refresh_status_by_logs!(date: @challenge.target_date)
     end
 

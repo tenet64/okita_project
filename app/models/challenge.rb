@@ -138,6 +138,10 @@ class Challenge < ApplicationRecord
     return :failed if failed?
 
     if recruiting?
+      # 募集中でも「起床までの残り時間（カウントダウン）」は表示したい。
+      # ただし詳細表示は、ホスト or 参加者 or 参加可能ユーザーに限定する。
+      show_countdown = host?(user) || participant?(user) || can_participate?(user)
+      return :recruiting_waiting if show_countdown && target_at.present? && Time.current < target_at
       return :recruiting_joined if host?(user) || participant?(user)
       return :recruiting_can_join if can_participate?(user)
       return :recruiting_full
@@ -229,6 +233,19 @@ class Challenge < ApplicationRecord
       update!(status: :failed)
     end
   end
+
+  def finalize_recruiting_if_due!
+  return unless recruiting?
+  return unless multi?
+  return if target_at.blank?
+  return if Time.current < target_at
+
+  if capacity.present? && participations.count >= capacity
+    update!(status: :ready)
+  else
+    update!(status: :failed) # 募集不成立を failed 扱い（MVP）
+  end
+end
 
   private
 
