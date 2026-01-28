@@ -37,7 +37,7 @@ class MypagesController < ApplicationController
     ((today - 120)..today).each do |d|
       if daily_success[d]
         run += 1
-        longest = [longest, run].max
+        longest = [ longest, run ].max
       else
         run = 0
       end
