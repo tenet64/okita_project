@@ -138,10 +138,8 @@ class Challenge < ApplicationRecord
     return :failed if failed?
 
     if recruiting?
-      # 募集中でも「起床までの残り時間（カウントダウン）」は表示したい。
-      # ただし詳細表示は、ホスト or 参加者 or 参加可能ユーザーに限定する。
-      show_countdown = host?(user) || participant?(user) || can_participate?(user)
-      return :recruiting_waiting if show_countdown && target_at.present? && Time.current < target_at
+      # 募集中でもカウントダウンを表示したいが、「参加ボタン」を隠さないため、
+      # state は join/joined/full のいずれかに固定し、カウントダウン表示は View 側で判断する。
       return :recruiting_joined if host?(user) || participant?(user)
       return :recruiting_can_join if can_participate?(user)
       return :recruiting_full
