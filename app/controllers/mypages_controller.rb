@@ -44,7 +44,6 @@ class MypagesController < ApplicationController
     end
     @longest_streak = longest
 
-
     # 今週（月〜日）の成功率（挑戦回数を母数にする）
     week_start = today.beginning_of_week(:monday)
     week_range = week_start.beginning_of_day..(week_start + 6).end_of_day

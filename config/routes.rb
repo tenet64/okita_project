@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboard#index", as: :dashboard
   end
 
-  resources :challenges do
+  resources :challenges, except: [ :edit, :update ] do
     resources :participations, only: [ :create, :destroy ]
     resource :wake_up_logs, only: [ :create ]
   end
