@@ -8,7 +8,7 @@ class ChallengesController < ApplicationController
    def index
     @challenges = Challenge
     .includes(:participations, :user)
-    .where.not(status: [:success, :failed])
+    .where.not(status: [ :success, :failed ])
     .order(target_time: :desc)
    end
 
