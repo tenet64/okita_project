@@ -6,16 +6,10 @@ class ChallengesController < ApplicationController
 
    # GET /challenges
    def index
-     now = Time.zone.now
-
     @challenges = Challenge
     .includes(:participations, :user)
-    .where(
-      "(target_date > :today) OR (target_date = :today AND target_time >= :current_time)",
-      today: now.to_date,
-      current_time: now.strftime("%H:%M:%S")
-    )
-    .order(:target_date, :target_time)
+    .where.not(status: [:success, :failed])
+    .order(target_time: :desc)
    end
 
     # GET /challenges/1
@@ -111,7 +105,7 @@ class ChallengesController < ApplicationController
       # 60分を切っていたら削除不可
       if Time.zone.now >= target_at - 60.minutes
         redirect_to challenge_path(@challenge),
-                    alert: "起床時刻の60分前を過ぎているため、このチャレンジは削除できません"
+                    alert: "起床時刻の60分前を過ぎているため、このチャレンジは削e除できません"
       end
     end
 end
