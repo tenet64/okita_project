@@ -49,6 +49,9 @@ class WakeUpLogsController < ApplicationController
       end
       format.html { redirect_to @challenge, notice: "起床を記録しました！" }
     end
+
+    participation = current_user.participations.find_by!(challenge_id: params[:challenge_id])
+    # participation.update!(wake_up_at: Time.current)
   end
 
   private

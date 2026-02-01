@@ -4,7 +4,7 @@ class MypagesController < ApplicationController
   def show
     @wake_up_logs = current_user.wake_up_logs
       .includes(:challenge)
-      .order(pressed_at: :desc)
+      .order(created_at: :desc)
 
     # --- MVP向けの統計情報（DBスキーマ変更なし） ---
     today = Date.current
