@@ -6,6 +6,8 @@ class Participation < ApplicationRecord
   validates :user_id, uniqueness: { scope: :challenge_id }
 
   after_create :mark_challenge_ready_if_filled
+  after_update_commit :broadcast_wakeup, if: :saved_change_to_wake_up_at?
+
 
   private
 
@@ -25,5 +27,14 @@ class Participation < ApplicationRecord
     if challenge.participations.count >= challenge.capacity
       challenge.update!(status: :ready)
     end
+  end
+
+  def broadcast_wakeup
+    broadcast_replace_to(
+      challenge,
+      target: "participation_#{id}",
+      partial: "participations/status",
+      locals: { participation: self }
+    )
   end
 end

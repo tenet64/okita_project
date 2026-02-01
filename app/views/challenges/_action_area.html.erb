@@ -12,8 +12,18 @@
     <% when :ready_missed, :ready_done, :ready_can_wake, :ready_no_permission %>
       <%= render "challenges/action_area/wakeup", challenge: challenge, state: state %>
 
+
+    <%= turbo_stream_from @challenge %>
+    <div class="space-y-2">
+      <% @challenge.participations.each do |p| %>
+        <div id="participation_<%= p.id %>">
+          <%= render "challenges/action_area/status", participation: p %>
+        </div>
+      <% end %>
+    </div>  
+
     <% when :success, :failed %>
-      <%= render "challenges/action_area/result", state: state %>
+      <%= render "challenges/action_area/result", state: state , challenge: challenge %>
     <% end %>
   </section>
 <% end %>

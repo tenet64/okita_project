@@ -1,5 +1,5 @@
 <div class="max-w-2xl mx-auto mt-8 bg-white p-6 rounded-lg shadow">
-  <h1 class="text-xl font-bold mb-4">起床ログ</h1>
+  <h1 class="text-xl font-bold mb-4">マイページ</h1>
 
   <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
     <div class="border rounded-lg p-4 bg-gray-50">
@@ -10,16 +10,6 @@
       </div>
       <div class="mt-2 text-xs text-gray-500">（成功ログ 1回 = 1pt）</div>
     </div>
-
-    <div class="border rounded-lg p-4 bg-gray-50">
-      <div class="text-xs text-gray-500">現在のストリーク</div>
-      <div class="mt-1 flex items-end gap-2">
-        <div class="text-3xl font-bold"><%= @current_streak %></div>
-        <div class="text-sm text-gray-600">日</div>
-      </div>
-      <div class="mt-2 text-xs text-gray-500">最長：<%= @longest_streak %>日</div>
-    </div>
-
 
     <div class="border rounded-lg p-4 bg-gray-50">
       <div class="text-xs text-gray-500">今週（月〜日）成功率</div>
@@ -61,7 +51,7 @@
           <div class="text-sm mt-1">
             結果：
             <span class="<%= log.success? ? 'text-green-600' : 'text-red-600' %> font-semibold">
-              <%= log.status %>
+              <%= I18n.t("wake_up_logs.status.#{log.status}") %>
             </span>
           </div>
          <!-- 操作（詳細 / 削除） -->
@@ -70,10 +60,7 @@
                   challenge_path(log.challenge),
                   class: "text-sm font-medium text-orange-600 hover:underline" %>
           </div>
-
         </div>
-
-
       <% end %>
     </div>
   <% else %>

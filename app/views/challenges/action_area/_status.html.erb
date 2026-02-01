@@ -1,0 +1,15 @@
+<div class="flex justify-between items-center p-2 border rounded">
+  <span><%= participation.user.name %></span>
+
+  <% log = participation.challenge.wake_up_logs.find_by(user: participation.user) %>
+
+  <% if log&.pressed_at.present? %>
+    <span class="text-green-600 font-bold">
+      起床成功（<%= l log.pressed_at, format: :short %>）
+    </span>
+  <% else %>
+    <span class="text-gray-400">
+      待機中
+    </span>
+  <% end %>
+</div>

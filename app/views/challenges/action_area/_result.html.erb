@@ -4,6 +4,10 @@
       🎉 チャレンジ成功！
     </p>
 
+  <% challenge.participations.each do |p| %>
+    <%= render "challenges/action_area/status", participation: p %>
+  <% end %>
+  
   <% when :failed %>
     <p class="text-sm text-red-700 text-center font-bold">
       😢 チャレンジ失敗
