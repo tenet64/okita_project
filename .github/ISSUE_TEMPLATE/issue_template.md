@@ -7,15 +7,6 @@ assignees: ''
 
 ---
 
----
-name: 開発前
-about: 開発前のissue用テンプレ
-title: ''
-labels: ''
-assignees: ''
-
----
-
 ### 概要
 
 
