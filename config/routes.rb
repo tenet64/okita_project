@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # 未ログイン時の root（ログイン画面）
   devise_scope :user do
     unauthenticated :user do
-      root to: "devise/sessions#new", as: :unauthenticated_root
+      root to: "static_pages#top", as: :unauthenticated_root
     end
   end
 

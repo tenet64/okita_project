@@ -1,42 +1,148 @@
-<div class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+<div class="bg-white">
 
-  <div class="bg-white shadow-lg rounded-lg px-8 py-10 w-full max-w-md">
-
-    <h1 class="text-center text-2xl font-semibold mb-4">okita!!へようこそ</h1>
-
-    <p class="text-center text-sm text-gray-600 mb-6 leading-relaxed">
-      習慣を身につけ、新しい自分と出会うための目覚ましアプリ。<br>
-      ソロでも仲間とでも、早起きの習慣を始めましょう！
-    </p>
-
-    <!-- Deviseログインフォーム -->
-    <%= form_with url: user_session_path, method: :post, class: "space-y-4" do |f| %>
-
-      <div>
-        <label class="text-sm font-medium text-gray-700">メールアドレス</label>
-        <%= f.email_field :email, class: "border w-full rounded px-3 py-2 mt-1" %>
+  <%# --- 1. ヒーローセクション（ファーストビュー） --- %>
+  <section class="relative bg-[#FDEBD0] overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+      <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+        <span class="block text-orange-600 mb-2">ひとりで起きる朝は、</span>
+        <span class="block">もう終わりにしよう。</span>
+      </h1>
+      <p class="mt-4 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+        「okita!!」は、友達や家族とチームを組んで早起きに挑戦するアプリです。<br>
+        誰かが待っているから、布団から出られる。
+      </p>
+      <div class="mt-8 max-w-md mx-auto sm:flex sm:justify-center md:mt-10">
+        <div class="rounded-md shadow">
+          <%= link_to "今すぐ始める", new_user_registration_path, class: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 md:py-4 md:text-lg md:px-10" %>
+        </div>
+        <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+          <%= link_to "ログイン", new_user_session_path, class: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-orange-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10" %>
+        </div>
       </div>
-
-      <div>
-        <label class="text-sm font-medium text-gray-700">パスワード</label>
-        <%= f.password_field :password, class: "border w-full rounded px-3 py-2 mt-1" %>
-      </div>
-
-      <div class="text-right">
-        <%= link_to "パスワードをお忘れですか？", new_user_password_path, class: "text-blue-600 text-sm" %>
-      </div>
-
-      <%= f.submit "ログイン", class: "w-full bg-gray-800 text-white py-2 rounded-md mt-2" %>
-    <% end %>
-
-    <div class="text-center my-6 text-gray-500">または</div>
-
-    <div class="text-center mt-6 text-gray-600 text-sm">
-      アカウントをお持ちでないですか？
     </div>
+    
+    <%# 装飾用の背景アイコン（薄く表示） %>
+    <div class="absolute top-0 left-0 -ml-10 -mt-10 opacity-10 text-orange-300">
+       <svg class="h-64 w-64" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    </div>
+  </section>
 
-    <%= link_to "新規登録", new_user_registration_path,
-        class: "w-full block text-center bg-blue-600 text-white py-2 rounded-md mt-3" %>
+  <%# --- 2. 使い方ステップ（How It Works） --- %>
+  <section class="py-16 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-base font-semibold text-orange-600 tracking-wide uppercase">How to use</h2>
+        <p class="mt-1 text-3xl font-extrabold text-gray-900 sm:text-4xl">3ステップで、朝が変わる</p>
+      </div>
 
-  </div>
+      <div class="mt-12">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+          
+          <%# STEP 1 %>
+          <div class="relative p-6 bg-gray-50 rounded-xl border border-gray-100 text-center hover:shadow-lg transition-shadow">
+            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm">1</div>
+            <div class="mt-4 flex items-center justify-center h-16 w-16 rounded-full bg-orange-100 text-orange-600 mx-auto">
+              <%# カレンダーアイコン %>
+              <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-900">チャレンジを作成</h3>
+            <p class="mt-2 text-base text-gray-500">
+              「明日7時に起きる！」<br>目標時間を決めてルームを作ります。
+            </p>
+          </div>
+
+          <%# STEP 2 %>
+          <div class="relative p-6 bg-gray-50 rounded-xl border border-gray-100 text-center hover:shadow-lg transition-shadow">
+            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm">2</div>
+            <div class="mt-4 flex items-center justify-center h-16 w-16 rounded-full bg-orange-100 text-orange-600 mx-auto">
+              <%# 招待アイコン %>
+              <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-900">仲間を招待</h3>
+            <p class="mt-2 text-base text-gray-500">
+              一人で継続記録を伸ばすか、<br>
+              友達と「連帯責任」で起きるか。<br>
+              その日の予定に合わせて選べます。
+            </p>
+          </div>
+
+          <%# STEP 3 %>
+          <div class="relative p-6 bg-gray-50 rounded-xl border border-gray-100 text-center hover:shadow-lg transition-shadow">
+            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm">3</div>
+            <div class="mt-4 flex items-center justify-center h-16 w-16 rounded-full bg-orange-100 text-orange-600 mx-auto">
+              <%# 起床アイコン %>
+              <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="mt-4 text-lg font-medium text-gray-900">起きたらボタンを押す！</h3>
+            <p class="mt-2 text-base text-gray-500">
+              時間内に全員が起きれば成功！<br>ポイントを貯めてランクを上げよう。
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# --- 3. アピールポイント（Features） --- %>
+  <section class="py-12 bg-[#FFF5E6]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="lg:text-center mb-10">
+        <h2 class="text-3xl font-extrabold text-gray-900">あなたの朝に合わせて選べる</h2>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-8 justify-center items-stretch">
+        
+        <%# 特徴A: ソロモード（自分との戦い） %>
+        <div class="bg-white p-6 rounded-lg shadow-sm w-full md:w-1/3 flex flex-col">
+          <div class="flex items-center mb-4">
+            <span class="text-3xl mr-3">🧘</span>
+            <h3 class="text-xl font-bold text-gray-900">ソロモード</h3>
+          </div>
+          <p class="text-gray-600 flex-grow">
+            「自分のペースで習慣化したい」<br>
+            毎日の起床記録をログで確認。連続達成記録を伸ばして、昨日の自分を超えていこう。
+          </p>
+        </div>
+
+        <%# 特徴B: マルチモード（協力プレイ） %>
+        <div class="bg-white p-6 rounded-lg shadow-sm w-full md:w-1/3 flex flex-col">
+          <div class="flex items-center mb-4">
+            <span class="text-3xl mr-3">🤝</span>
+            <h3 class="text-xl font-bold text-gray-900">マルチモード</h3>
+          </div>
+          <p class="text-gray-600 flex-grow">
+            「一人だと二度寝してしまう…」<br>
+            家族や友達とチーム結成！誰か一人が起きなければ全員失敗！？連帯責任が最強の目覚ましに。
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+      </div>
+    </div>
+  </section>
+
+  <%# --- 4. 最後のCTA（Call To Action） --- %>
+  <section class="bg-orange-600">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+      <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+        <span class="block">準備はいいですか？</span>
+        <span class="block text-orange-200">まずは無料でアカウント作成。</span>
+      </h2>
+      <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
+        <div class="inline-flex rounded-md shadow">
+          <%= link_to "新規登録して始める", new_user_registration_path, class: "inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-orange-600 bg-white hover:bg-orange-50" %>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>
