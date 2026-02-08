@@ -18,3 +18,6 @@ application.register("datetime-min", DatetimeMinController)
 
 import ModeCapacityController from "./mode_capacity_controller"
 application.register("mode-capacity", ModeCapacityController)
+
+import MobileMenuController from "./mobile_menu_controller"
+application.register("mobile-menu", MobileMenuController)

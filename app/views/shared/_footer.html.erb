@@ -1,0 +1,26 @@
+<footer class="bg-gray-50 border-t border-gray-200 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-center gap-4">
+    
+    <%# リンク部分 %>
+    <div class="flex items-center space-x-4 text-sm text-gray-600">
+      <%= link_to "利用規約", terms_path, class: "hover:text-orange-600 transition-colors" %>
+      
+      <span class="text-gray-300">|</span>
+
+      <%= link_to "プライバシーポリシー", privacy_path, class: "hover:text-orange-600 transition-colors" %>
+
+     <span class="text-gray-300">|</span>
+
+      <%= link_to "お問い合わせ", contact_path, class: "hover:text-orange-600 transition-colors" %>
+    </div>
+
+    <%# PCのみ表示する区切り線 %>
+    <span class="hidden md:inline text-gray-300">|</span>
+
+    <%# コピーライト %>
+    <span class="text-sm text-gray-500">
+      &copy; <%= Time.current.year %> okita!!
+    </span>
+
+  </div>
+</footer>
