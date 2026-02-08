@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   get "participations/create"
   get "participations/destroy"
   get "/mypage", to: "mypages#show", as: :mypage
+  get "/terms", to: "static_pages#terms", as: :terms
+  get "/privacy", to: "static_pages#privacy", as: :privacy
+  get "contact", to: "static_pages#contact"
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
