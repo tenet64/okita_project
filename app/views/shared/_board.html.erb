@@ -74,7 +74,7 @@
                   challenge_path(challenge),
                   class: "text-sm font-medium text-orange-600 hover:underline" %>
 
-            <% if challenge.user_id == current_user.id && challenge.destroyable? %>
+            <% if user_signed_in? && challenge.user_id == current_user&.id && challenge.destroyable? %>
               <%= link_to "チャレンジを削除する",
                     challenge_path(challenge),
                     data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },

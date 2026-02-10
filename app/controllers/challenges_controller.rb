@@ -3,6 +3,7 @@ class ChallengesController < ApplicationController
     before_action :authenticate_user!, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
     before_action :correct_challenge, only: [ :edit, :update, :destroy ]
     before_action :prevent_destroy_if_close, only: [ :destroy ]
+    before_action :authenticate_user!
 
    # GET /challenges
    def index

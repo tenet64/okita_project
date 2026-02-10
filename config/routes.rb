@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   get "/terms", to: "static_pages#terms", as: :terms
   get "/privacy", to: "static_pages#privacy", as: :privacy
   get "contact", to: "static_pages#contact"
+  get 'auth/:provider/callback', to: 'sessions#create'
+  get 'auth/failure', to: redirect('/')
+  delete 'logout', to: 'sessions#destroy', as: 'logout'
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",

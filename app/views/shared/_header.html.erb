@@ -16,7 +16,6 @@
 
     <%# --- PC用ナビゲーション --- %>
     <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-orange-600">
-      <%# 定義した配列をループして表示 %>
       <% menu_items.each do |item| %>
         <%= link_to item[:name], item[:path], class: "hover:underline" %>
       <% end %>
@@ -24,12 +23,13 @@
       <%# PC用ドロップダウン（ユーザー名など） %>
       <div class="relative ml-4" data-controller="dropdown" data-action="click@window->dropdown#close">
         <button type="button" class="flex items-center space-x-2 focus:outline-none" data-action="click->dropdown#toggle">
-          <span class="text-sm font-medium text-gray-700"><%= current_user.name %> ▼</span>
+          <span class="text-sm font-medium text-gray-700"><%= current_user&.name %> ▼</span>
         </button>
-        <div data-dropdown-target="menu" class="hidden absolute right-0 top-8 w-48 rounded-md bg-white shadow-lg border border-gray-100 z-50">
-          <%= link_to "プロフィール", profile_path, class: "block px-4 py-2 text-sm hover:bg-orange-50" %>
+        <div data-dropdown-target="menu" class="hidden absolute right-0 top-8 w-48 rounded-md bg-white shadow-lg border border-gray-100 z-50 overflow-hidden">
+          <%= link_to "プロフィール", profile_path, class: "block px-4 py-2 text-sm hover:bg-orange-50 text-gray-700" %>
           <div class="border-t"></div>
-          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-red-600 hover:bg-red-50" %>
+
+          <%= button_to "ログアウト", logout_path, method: :delete, data: { turbo: false }, class: "w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50 bg-transparent border-0 cursor-pointer" %>
         </div>
       </div>
     </nav>
@@ -53,7 +53,7 @@
   <div data-mobile-menu-target="menu" class="hidden md:hidden border-t border-orange-200 bg-[#FFF5E6]">
     <nav class="flex flex-col p-4 space-y-3">
       
-      <%# 定義した配列をループして表示（スマホ用のクラスとdata属性を適用） %>
+      <%# 定義した配列をループして表示 %>
       <% menu_items.each do |item| %>
         <%= link_to item[:name], item[:path], 
             class: "block text-gray-700 font-medium", 
@@ -63,10 +63,11 @@
       <div class="border-t border-orange-200 my-2"></div>
       
       <div class="flex items-center justify-between">
-        <span class="text-sm text-gray-500">ログイン中: <%= current_user.name %></span>
+        <span class="text-sm text-gray-500">ログイン中: <%= current_user&.name %></span>
       </div>
       <%= link_to "プロフィール設定", profile_path, class: "block text-gray-700", data: { action: "click->mobile-menu#close" } %>
-      <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "block text-red-600 font-bold" %>
+
+      <%= button_to "ログアウト", logout_path, method: :delete, data: { turbo: false }, class: "w-full text-left block text-red-600 font-bold bg-transparent border-0 cursor-pointer" %>
     </nav>
   </div>
 </header>
