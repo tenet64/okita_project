@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_11_132011) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "badges", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description", null: false
+    t.string "image_path", null: false
+    t.string "condition_key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["condition_key"], name: "index_badges_on_condition_key", unique: true
+  end
 
   create_table "challenges", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -51,6 +61,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
     t.index ["user_id"], name: "index_point_transactions_on_user_id"
   end
 
+  create_table "user_badges", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "badge_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["badge_id"], name: "index_user_badges_on_badge_id"
+    t.index ["user_id", "badge_id"], name: "index_user_badges_on_user_id_and_badge_id", unique: true
+    t.index ["user_id"], name: "index_user_badges_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -82,6 +102,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
   add_foreign_key "participations", "challenges"
   add_foreign_key "participations", "users"
   add_foreign_key "point_transactions", "users"
+  add_foreign_key "user_badges", "badges"
+  add_foreign_key "user_badges", "users"
   add_foreign_key "wake_up_logs", "challenges"
   add_foreign_key "wake_up_logs", "users"
 end

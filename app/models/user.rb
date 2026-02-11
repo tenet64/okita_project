@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :wake_up_logs, dependent: :destroy
   has_many :point_transactions, dependent: :destroy
   has_many :participations, dependent: :destroy
+  has_many :user_badges, dependent: :destroy
+  has_many :badges, through: :user_badges
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 end
