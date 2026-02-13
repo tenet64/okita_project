@@ -50,7 +50,7 @@ badge_data_list = [
 
 badge_data_list.each do |data|
   badge = Badge.find_or_initialize_by(condition_key: data[:condition_key])
-  
+
   badge.name = data[:name]
   badge.description = data[:description]
   badge.image_path = data[:image_path]
