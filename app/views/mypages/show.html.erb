@@ -1,7 +1,7 @@
 <div class="max-w-2xl mx-auto mt-8 bg-white p-6 rounded-lg shadow">
   <h1 class="text-xl font-bold mb-4">マイページ</h1>
 
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
     <div class="border rounded-lg p-4 bg-gray-50">
       <div class="text-xs text-gray-500">現在のポイント</div>
       <div class="mt-1 flex items-end gap-2">
@@ -14,7 +14,9 @@
     <div class="border rounded-lg p-4 bg-gray-50">
       <div class="text-xs text-gray-500">今週（月〜日）成功率</div>
       <div class="mt-1 flex items-end gap-2">
-        <div class="text-3xl font-bold"><%= @attempts_week.to_i.zero? ? '--' : @success_rate_week %></div>
+        <div class="text-3xl font-bold">
+          <%= format_success_rate(@success_rate_week, @attempts_week) %>
+        </div>
         <div class="text-sm text-gray-600">%</div>
       </div>
       <div class="mt-2 text-xs text-gray-500"><%= @successes_week %> / <%= @attempts_week %> 回 成功</div>
@@ -23,11 +25,53 @@
     <div class="border rounded-lg p-4 bg-gray-50">
       <div class="text-xs text-gray-500">直近7日 平均起床時刻</div>
       <div class="mt-1 flex items-end gap-2">
-        <div class="text-3xl font-bold"><%= @avg_wake_time_7d || '--:--' %></div>
+        <div class="text-3xl font-bold">
+          <%= format_avg_time(@avg_wake_time_7d) %>
+        </div>
       </div>
       <div class="mt-2 text-xs text-gray-500">（記録がある日の最初の押下）</div>
     </div>
   </div>
+
+  <div class="mb-8">
+    <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+      <span>🏆</span> バッジコレクション
+    </h2>
+
+    <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+      <% @badges.each do |badge| %>
+        <% is_earned = @my_badge_ids.include?(badge.id) %>
+
+        <div class="<%= badge_card_classes(is_earned) %>">
+          
+          <div class="w-14 h-14 mb-2 object-contain">
+            <% if badge.image_path.present? %>
+              <%= image_tag badge.image_path, class: "w-full h-full drop-shadow-sm" %>
+            <% else %>
+              <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-[10px] text-gray-500">No Img</div>
+            <% end %>
+          </div>
+
+          <h3 class="text-xs font-bold mb-1 <%= badge_name_color(is_earned) %>">
+            <%= badge.name %>
+          </h3>
+
+          <div class="text-[10px] leading-tight <%= badge_desc_color(is_earned) %>">
+            <%= simple_format(badge.description, class: "mb-0") %>
+          </div>
+
+          <% if is_earned %>
+            <div class="absolute -top-2 -right-2 bg-yellow-400 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-sm border border-white">GET</div>
+          <% end %>
+
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+    <span>📝</span> 起床ログ
+  </h2>
 
   <% if @wake_up_logs.any? %>
     <div class="space-y-3">
@@ -50,20 +94,20 @@
 
           <div class="text-sm mt-1">
             結果：
-            <span class="<%= log.success? ? 'text-green-600' : 'text-red-600' %> font-semibold">
+            <span class="<%= log_status_color(log.status) %> font-semibold">
               <%= I18n.t("wake_up_logs.status.#{log.status}") %>
             </span>
           </div>
-         <!-- 操作（詳細 / 削除） -->
+          
           <div class="mt-4 flex items-center justify-end gap-4">
-            <%= link_to "詳細を見る",
-                  challenge_path(log.challenge),
-                  class: "text-sm font-medium text-orange-600 hover:underline" %>
+            <%= link_to "詳細を見る", challenge_path(log.challenge), class: "text-sm font-medium text-orange-600 hover:underline" %>
           </div>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-gray-500">まだ起床ログがありません</p>
+    <p class="text-gray-500 text-center py-8 border-2 border-dashed rounded-lg">
+      まだ起床ログがありません。<br>最初の挑戦を始めましょう！
+    </p>
   <% end %>
 </div>
