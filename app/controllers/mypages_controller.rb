@@ -36,5 +36,9 @@ class MypagesController < ApplicationController
   end
 
   def graph
+    # URLに日付があればそれを、なければ「今日を含めた過去1週間」を基準にする
+    @start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : Date.current - 6.days
+
+    @chart_data = current_user.wake_up_time_chart(@start_date)
   end
 end
