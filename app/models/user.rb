@@ -114,4 +114,23 @@ class User < ApplicationRecord
     check_solo_mode_badges
     check_multi_mode_badges
   end
+
+  def wake_up_time_chart(start_date)
+    end_date = start_date + 6.days
+    logs = wake_up_logs.where(pressed_at: start_date.beginning_of_day..end_date.end_of_day)
+    logs_by_date = logs.index_by { |log| log.pressed_at.to_date }
+
+    (start_date..end_date).map do |date|
+      log = logs_by_date[date]
+      # X軸: 日付ラベル
+      label = date.strftime("%-m/%-d")
+
+      if log
+        hours = log.pressed_at.hour + (log.pressed_at.min / 60.0)
+        [ label, hours ]
+      else
+        [ label, nil ]
+      end
+    end
+  end
 end
