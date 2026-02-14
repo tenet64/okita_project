@@ -1,0 +1,31 @@
+<div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-lg shadow">
+  <h1 class="text-xl font-bold mb-6 text-center">📅 チャレンジカレンダー</h1>
+  <p class="text-xs  text-center text-gray-600 mb-8">成功した日は☀️ 起きれなかった日は☁️ です。
+    <br>
+    絵文字をクリックして、詳細を確認しましょう！</p>
+
+  <%= month_calendar(events: @challenges, attribute: :target_date) do |date, challenges| %>
+    
+    <div class="text-xs text-gray-500 mb-1">
+      <%= date.day %>
+    </div>
+
+    <div class="flex flex-wrap gap-1 justify-center">
+      <% challenges.each do |challenge| %>
+        
+        <%= link_to challenge_path(challenge), class: "text-lg hover:scale-110 transition-transform", title: challenge.title do %>
+          
+          <%# --- アイコンの出し分けロジック --- %>
+          <% if challenge.status == 'success' %>
+            ☀️
+          <% else %>
+            ☁️
+          <% end %>
+
+        <% end %>
+
+      <% end %>
+    </div>
+
+  <% end %>
+</div>

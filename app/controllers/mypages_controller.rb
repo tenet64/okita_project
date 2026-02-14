@@ -26,4 +26,15 @@ class MypagesController < ApplicationController
     @badges = Badge.all.order(id: :asc)
     @my_badge_ids = current_user.badges.pluck(:id)
   end
+
+  def calendar
+    # 表示する月の開始日を取得（デフォルトは当日）
+    start_date = params.fetch(:start_date, Date.today).to_date
+
+    # その月のチャレンジデータを取得
+    @challenges = current_user.challenges.where(target_date: start_date.all_month)
+  end
+
+  def graph
+  end
 end

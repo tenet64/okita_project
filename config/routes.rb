@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   get "participations/create"
   get "participations/destroy"
-  get "/mypage", to: "mypages#show", as: :mypage
   get "/terms", to: "static_pages#terms", as: :terms
   get "/privacy", to: "static_pages#privacy", as: :privacy
   get "contact", to: "static_pages#contact"
@@ -31,6 +30,11 @@ Rails.application.routes.draw do
   end
 
   resource :profile, only: %i[show edit update]
+
+  resource :mypage, only: :show do
+    get :calendar, on: :collection
+    get :graph, on: :collection
+  end
 
   # devise_for :users
   get "posts/index"
