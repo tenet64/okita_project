@@ -1,10 +1,10 @@
 class CreatePointTransactions < ActiveRecord::Migration[7.0]
   def change
-    create_table :point_transactions do |t|
-      t.references :user, null: false, foreign_key: true
+    create_table :point_transactions, id: :uuid do |t|
+      t.references :user, null: false, foreign_key: true, type: :uuid
       t.integer :points, null: false, default: 0
       t.integer :reason, null: false
-      t.references :source, polymorphic: true, null: false
+      t.references :source, polymorphic: true, null: false, type: :uuid
       t.date :target_date, null: false
 
       t.timestamps

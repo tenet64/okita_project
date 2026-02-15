@@ -1,6 +1,6 @@
 class CreateBadges < ActiveRecord::Migration[7.2]
   def change
-    create_table :badges do |t|
+    create_table :badges, id: :uuid do |t|
       t.string :name, null: false
       t.text :description, null: false
       t.string :image_path, null: false
