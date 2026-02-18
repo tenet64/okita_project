@@ -1,113 +1,105 @@
-<div class="max-w-2xl mx-auto mt-8 bg-white p-6 rounded-lg shadow">
-  <h1 class="text-xl font-bold mb-4">マイページ</h1>
+<div class="min-h-screen bg-gray-50 py-10 px-4">
+  <div class="max-w-md mx-auto">
+    <h1 class="text-xl font-bold mb-4">マイページ</h1>
 
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-    <div class="border rounded-lg p-4 bg-gray-50">
-      <div class="text-xs text-gray-500">現在のポイント</div>
-      <div class="mt-1 flex items-end gap-2">
-        <div class="text-3xl font-bold"><%= @points %></div>
-        <div class="text-sm text-gray-600">pt</div>
-      </div>
-      <div class="mt-2 text-xs text-gray-500">（成功ログ 1回 = 1pt）</div>
-    </div>
-
-    <div class="border rounded-lg p-4 bg-gray-50">
-      <div class="text-xs text-gray-500">今週（月〜日）成功率</div>
-      <div class="mt-1 flex items-end gap-2">
-        <div class="text-3xl font-bold">
-          <%= format_success_rate(@success_rate_week, @attempts_week) %>
+    <div class="bg-white rounded-2xl shadow-sm p-6 mb-8">
+      <div class="space-y-4 text-sm text-gray-700">
+        <div class="flex justify-between">
+          <span class="text-gray-500">ユーザー名</span>
+          <span class="font-medium"><%= current_user.name %></span>
         </div>
-        <div class="text-sm text-gray-600">%</div>
-      </div>
-      <div class="mt-2 text-xs text-gray-500"><%= @successes_week %> / <%= @attempts_week %> 回 成功</div>
-    </div>
 
-    <div class="border rounded-lg p-4 bg-gray-50">
-      <div class="text-xs text-gray-500">直近7日 平均起床時刻</div>
-      <div class="mt-1 flex items-end gap-2">
-        <div class="text-3xl font-bold">
-          <%= format_avg_time(@avg_wake_time_7d) %>
+        <div class="flex justify-between">
+          <span class="text-gray-500">メールアドレス</span>
+          <span class="font-medium"><%= current_user.email %></span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-gray-500">登録日</span>
+          <span class="font-medium">
+            <%= current_user.created_at.strftime("%Y/%m/%d") %>
+          </span>
         </div>
       </div>
-      <div class="mt-2 text-xs text-gray-500">（記録がある日の最初の押下）</div>
+
+      <div class="mt-8 flex flex-col gap-3">
+        <%= link_to "プロフィールを編集",
+            edit_mypage_path,
+            class: "w-full text-center px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition" %>
+
+        <%= link_to "ダッシュボードへ戻る",
+            authenticated_root_path,
+            class: "w-full text-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition" %>
+
+        <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "w-full text-center px-4 py-2 rounded-lg bg-red-100 text-gray-700 hover:bg-gray-200 transition" %>
+      </div>
     </div>
-  </div>
 
-  <div class="mb-8">
-    <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-      <span>🏆</span> バッジコレクション
-    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="text-xs text-gray-500">現在のポイント</div>
+        <div class="mt-1 flex items-end gap-2">
+          <div class="text-3xl font-bold"><%= @points %></div>
+          <div class="text-sm text-gray-600">pt</div>
+        </div>
+        <div class="mt-2 text-xs text-gray-500">（成功ログ 1回 = 1pt）</div>
+      </div>
 
-    <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
-      <% @badges.each do |badge| %>
-        <% is_earned = @my_badge_ids.include?(badge.id) %>
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="text-xs text-gray-500">今週（月〜日）成功率</div>
+        <div class="mt-1 flex items-end gap-2">
+          <div class="text-3xl font-bold">
+            <%= format_success_rate(@success_rate_week, @attempts_week) %>
+          </div>
+          <div class="text-sm text-gray-600">%</div>
+        </div>
+        <div class="mt-2 text-xs text-gray-500"><%= @successes_week %> / <%= @attempts_week %> 回 成功</div>
+      </div>
 
-        <div class="<%= badge_card_classes(is_earned) %>">
-          
-          <div class="w-14 h-14 mb-2 object-contain">
-            <% if badge.image_path.present? %>
-              <%= image_tag badge.image_path, class: "w-full h-full drop-shadow-sm" %>
-            <% else %>
-              <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-[10px] text-gray-500">No Img</div>
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="text-xs text-gray-500">直近7日 平均起床時刻</div>
+        <div class="mt-1 flex items-end gap-2">
+          <div class="text-3xl font-bold">
+            <%= format_avg_time(@avg_wake_time_7d) %>
+          </div>
+        </div>
+        <div class="mt-2 text-xs text-gray-500">（記録がある日の最初の押下）</div>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+        <span>🏆</span> バッジコレクション
+      </h2>
+
+      <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+        <% @badges.each do |badge| %>
+          <% is_earned = @my_badge_ids.include?(badge.id) %>
+
+          <div class="<%= badge_card_classes(is_earned) %>">
+            <div class="w-14 h-14 mb-2 object-contain">
+              <% if badge.image_path.present? %>
+                <%= image_tag badge.image_path, class: "w-full h-full drop-shadow-sm" %>
+              <% else %>
+                <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-[10px] text-gray-500">No Img</div>
+              <% end %>
+            </div>
+
+            <h3 class="text-xs font-bold mb-1 <%= badge_name_color(is_earned) %>">
+              <%= badge.name %>
+            </h3>
+
+            <div class="text-[10px] leading-tight <%= badge_desc_color(is_earned) %>">
+              <%= simple_format(badge.description, class: "mb-0") %>
+            </div>
+
+            <% if is_earned %>
+              <div class="absolute -top-2 -right-2 bg-yellow-400 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-sm border border-white">GET</div>
             <% end %>
           </div>
-
-          <h3 class="text-xs font-bold mb-1 <%= badge_name_color(is_earned) %>">
-            <%= badge.name %>
-          </h3>
-
-          <div class="text-[10px] leading-tight <%= badge_desc_color(is_earned) %>">
-            <%= simple_format(badge.description, class: "mb-0") %>
-          </div>
-
-          <% if is_earned %>
-            <div class="absolute -top-2 -right-2 bg-yellow-400 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-sm border border-white">GET</div>
-          <% end %>
-
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
+
   </div>
-
-  <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-    <span>📝</span> 起床ログ
-  </h2>
-
-  <% if @wake_up_logs.any? %>
-    <div class="space-y-3">
-      <% @wake_up_logs.each do |log| %>
-        <div class="border rounded p-4">
-          <div class="font-semibold text-gray-800">
-            <%= log.challenge.title %>
-          </div>
-
-          <div class="text-sm text-gray-600 mt-1">
-            📅 <%= log.challenge.target_date %>
-            ⏰ <%= log.challenge.target_time.strftime("%H:%M") %>
-          </div>
-
-          <div class="text-sm mt-2">
-            <% if log.pressed_at.present? %>
-              押した時刻：<%= l(log.pressed_at, format: :short) %>
-            <% end %>
-          </div>
-
-          <div class="text-sm mt-1">
-            結果：
-            <span class="<%= log_status_color(log.status) %> font-semibold">
-              <%= I18n.t("wake_up_logs.status.#{log.status}") %>
-            </span>
-          </div>
-          
-          <div class="mt-4 flex items-center justify-end gap-4">
-            <%= link_to "詳細を見る", challenge_path(log.challenge), class: "text-sm font-medium text-orange-600 hover:underline" %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <p class="text-gray-500 text-center py-8 border-2 border-dashed rounded-lg">
-      まだ起床ログがありません。<br>最初の挑戦を始めましょう！
-    </p>
-  <% end %>
 </div>

@@ -1,41 +1,34 @@
-<%# --- 共通のメニュー項目をここで定義 --- %>
-<% menu_items = [
-  { name: "チャレンジ一覧", path: challenges_path },
-  { name: "マイチャレンジ", path: dashboard_path },
-  { name: "マイページ", path: mypage_path }
-] %>
-
 <header class="bg-[#FDEBD0] border-b border-gray-200" data-controller="mobile-menu">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
-    <%# ロゴ部分 %>
-    <%= link_to authenticated_root_path, class: "flex items-center space-x-2" do %>
-      <%= image_tag "logo.svg", class: "h-8 w-8 object-contain", alt: "okita ロゴ" %>
-      <span class="text-xl font-bold text-gray-800">okita!!</span>
-    <% end %>
-
-    <%# --- PC用ナビゲーション --- %>
-    <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-orange-600">
-      <%# 定義した配列をループして表示 %>
-      <% menu_items.each do |item| %>
-        <%= link_to item[:name], item[:path], class: "hover:underline" %>
+    <%# --- PC用ナビゲーション (左側: ロゴ + メニュー) --- %>
+    <div class="flex items-center space-x-6">
+      <%# 1. ロゴ %>
+      <%= link_to authenticated_root_path, class: "flex items-center space-x-2" do %>
+        <%= image_tag "logo.svg", class: "h-8 w-8 object-contain", alt: "okita ロゴ" %>
+        <span class="text-xl font-bold text-gray-800">okita!!</span>
       <% end %>
-      
-      <%# PC用ドロップダウン（ユーザー名など） %>
-      <div class="relative ml-4" data-controller="dropdown" data-action="click@window->dropdown#close">
-        <button type="button" class="flex items-center space-x-2 focus:outline-none" data-action="click->dropdown#toggle">
-          <span class="text-sm font-medium text-gray-700"><%= current_user.name %> ▼</span>
-        </button>
-        <div data-dropdown-target="menu" class="hidden absolute right-0 top-8 w-48 rounded-md bg-white shadow-lg border border-gray-100 z-50">
-          <%= link_to "プロフィール", profile_path, class: "block px-4 py-2 text-sm hover:bg-orange-50" %>
-          <div class="border-t"></div>
-          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-red-600 hover:bg-red-50" %>
-        </div>
-      </div>
-    </nav>
+
+      <%# PC用メニュー項目 %>
+      <nav class="hidden md:flex items-center space-x-4 text-sm font-medium text-orange-600">
+        <%= link_to "使い方", how_to_use_path, class: "hover:text-orange-800 transition" %>
+        <%= link_to "チャレンジを作成", new_challenge_path, class: "hover:text-orange-800 transition" %>
+        <%= link_to "チャレンジ一覧", challenges_path, class: "hover:text-orange-800 transition" %>
+        <%= link_to "ホーム", dashboard_path, class: "hover:text-orange-800 transition" %>
+        <%= link_to "マイカレンダー", calendar_mypage_path, class: "hover:text-orange-800 transition" %>
+        <%= link_to "週間グラフ", graph_mypage_path, class: "hover:text-orange-800 transition" %>
+      </nav>
+    </div>
+
+    <%# --- PC用ユーザーメニュー (右側: ユーザー名ドロップダウン) --- %>
+    <div class="hidden md:block">
+      <%= link_to "マイページ", mypage_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50" %>
+      <div class="border-t border-gray-100"></div>    
+    </div>
 
     <%# --- スマホ用ハンバーガーボタン --- %>
-    <div class="md:hidden flex items-center">
+    <%# justify-betweenが効くように、ここをPCメニューと同じ階層に置きました %>
+    <div class="md:hidden flex items-center ml-auto">
       <button type="button" data-action="click->mobile-menu#toggle" class="text-gray-700 hover:text-orange-600 focus:outline-none p-2">
         <span class="sr-only">メニューを開く</span>
         <svg data-mobile-menu-target="openIcon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -49,23 +42,25 @@
 
   </div>
 
-  <%# --- スマホ用メニュー本体 --- %>
+  <%# --- スマホ用メニュー本体 (全項目を展開して表示) --- %>
   <div data-mobile-menu-target="menu" class="hidden md:hidden border-t border-orange-200 bg-[#FFF5E6]">
     <nav class="flex flex-col p-4 space-y-3">
-      
-      <%# 定義した配列をループして表示（スマホ用のクラスとdata属性を適用） %>
-      <% menu_items.each do |item| %>
-        <%= link_to item[:name], item[:path], 
-            class: "block text-gray-700 font-medium", 
-            data: { action: "click->mobile-menu#close" } %>
-      <% end %>
-      
-      <div class="border-t border-orange-200 my-2"></div>
-      
-      <div class="flex items-center justify-between">
-        <span class="text-sm text-gray-500">ログイン中: <%= current_user.name %></span>
+      <%# ユーザー情報 %>
+      <div class="pb-2 border-b border-orange-200 mb-2">
+        <p class="text-sm text-gray-500">ログイン中</p>
+        <p class="font-bold text-gray-800"><%= current_user.name %></p>
       </div>
-      <%= link_to "プロフィール設定", profile_path, class: "block text-gray-700", data: { action: "click->mobile-menu#close" } %>
+
+      <%= link_to "使い方", how_to_use_path, class: "block text-gray-700 font-medium py-1", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to "チャレンジを作成", new_challenge_path, class: "block text-gray-700 font-medium py-1", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to "チャレンジ一覧", challenges_path, class: "block text-gray-700 font-medium py-1", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to "トップ", mypage_path, class: "block text-gray-700 text-sm", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to "マイカレンダー", calendar_mypage_path, class: "block text-gray-700 text-sm", data: { action: "click->mobile-menu#close" } %>
+      <%= link_to "週間グラフ", graph_mypage_path, class: "block text-gray-700 text-sm", data: { action: "click->mobile-menu#close" } %>
+
+      <div class="border-t border-orange-200 my-2"></div>
+
+      <%= link_to "マイページ", mypage_path, class: "block text-gray-700", data: { action: "click->mobile-menu#close" } %>
       <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "block text-red-600 font-bold" %>
     </nav>
   </div>

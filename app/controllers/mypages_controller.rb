@@ -27,6 +27,20 @@ class MypagesController < ApplicationController
     @my_badge_ids = current_user.badges.pluck(:id)
   end
 
+  def edit
+    @user = current_user
+end
+
+  def update
+    @user = current_user
+    if @user.update(user_params)
+      redirect_to mypage_path, notice: "プロフィールを更新しました"
+    else
+      flash.now[:alert] = "プロフィールの更新に失敗しました"
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def calendar
     # 表示する月の開始日を取得（デフォルトは当日）
     start_date = params.fetch(:start_date, Date.today).to_date
@@ -40,5 +54,11 @@ class MypagesController < ApplicationController
     @start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : Date.current - 6.days
 
     @chart_data = current_user.wake_up_time_chart(@start_date)
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:email, :name)
   end
 end
