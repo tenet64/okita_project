@@ -3,5 +3,13 @@
   <%= render "challenges/summary", challenge: @challenge %>
   <%= render "challenges/participants", challenge: @challenge, participants: @participants %>
   <%= render "challenges/action_area", challenge: @challenge, participants: @participants %>
-  
+  <div class="mt-6 flex justify-center">
+  <%= link_to "https://twitter.com/intent/tweet?url=#{CGI.escape(@challenges_url)}&text=#{CGI.escape('okitaで起きよう')}",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    class: "inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 border border-gray-200 font-bold text-sm rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-sm" do %>
+      <%= image_tag 'logo-black.png', alt: 'X Logo', class: "w-4 h-4" %>
+  <span>Xでシェアする</span>
+  <% end %>
+  </div>
 </div>
