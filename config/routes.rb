@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get "/terms", to: "static_pages#terms", as: :terms
   get "/privacy", to: "static_pages#privacy", as: :privacy
   get "contact", to: "static_pages#contact"
+  get "how_to_use", to: "static_pages#how_to_use", as: :how_to_use
+
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
@@ -20,7 +22,7 @@ Rails.application.routes.draw do
 
   # ログイン後の root（ダッシュボード）
   authenticated :user do
-    root to: "challenges#index", as: :authenticated_root
+    root to: "dashboard#index", as: :authenticated_root
     get "dashboard", to: "dashboard#index", as: :dashboard
   end
 
@@ -29,9 +31,7 @@ Rails.application.routes.draw do
     resource :wake_up_logs, only: [ :create ]
   end
 
-  resource :profile, only: %i[show edit update]
-
-  resource :mypage, only: :show do
+  resource :mypage, only: [ :show, :edit, :update ] do
     get :calendar, on: :collection
     get :graph, on: :collection
   end
