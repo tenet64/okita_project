@@ -43,6 +43,7 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  
 end
 
 group :development do
@@ -64,3 +65,4 @@ gem "letter_opener_web", "~> 3.0"
 gem "simple_calendar"
 gem "chartkick"
 gem "meta-tags"
+gem "rspec-rails" 
