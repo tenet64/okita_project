@@ -57,7 +57,7 @@ group :test do
 end
 
 gem "tailwindcss-rails"
-gem "tailwindcss-ruby", "3.4.17"
+gem "tailwindcss-ruby", "4.2.0"
 gem "devise"
 gem "rails-i18n"
 gem "letter_opener_web", "~> 3.0"
