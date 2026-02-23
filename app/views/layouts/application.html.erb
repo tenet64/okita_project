@@ -9,30 +9,28 @@
     <%= csp_meta_tag %>
 
     <%= yield :head %>
-
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <%= display_meta_tags(default_meta_tags) %>
   </head>
 
-  <body class="flex flex-col min-h-screen">
+  <body class="flex flex-col min-h-screen bg-fixed bg-cover bg-center" 
+      style="background-image: url('<%= asset_path('background.png') %>');">
 
-    <% if user_signed_in? %>
-      <%= render 'shared/header' %>
-    <% else %>
-      <%= render 'shared/before_login_header' %>
-    <% end %>
+  <% if user_signed_in? %>
+    <%= render 'shared/header' %>
+  <% else %>
+    <%= render 'shared/before_login_header' %>
+  <% end %>
 
-    <%= render 'shared/flash_message' %>
+  <%= render 'shared/flash_message' %>
 
-    <main class="flex-grow">
-      <%= yield %>
-    </main>
+  <main class="flex-grow bg-white/70 backdrop-blur-[2px]">
+    <%= yield %>
+  </main>
 
-    <%= render 'shared/footer' %>
-  </body>
+  <%= render 'shared/footer' %>
+</body>
 </html>

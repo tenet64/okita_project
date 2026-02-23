@@ -1,0 +1,87 @@
+<div class="mb-8 bg-white p-6 rounded-lg shadow">
+   <h1 class="text-xl font-bold mb-6 text-center">📈1週間の起床時間グラフ</h1>
+
+  <div class="flex justify-between items-center mb-6 bg-gray-50 p-3 rounded-lg">
+  <%= link_to graph_mypage_path(start_date: @start_date - 7.days), class: "flex items-center gap-1 text-gray-600 hover:text-orange-600 transition" do %>
+    <span>&larr;</span> 前の週
+  <% end %>
+
+  <div class="font-bold text-lg text-gray-700">
+    <%= @start_date.strftime("%-m/%-d") %> 
+    <span class="text-gray-400 mx-1">〜</span> 
+    <%= (@start_date + 6.days).strftime("%-m/%-d") %>
+  </div>
+
+  <%= link_to graph_mypage_path(start_date: @start_date + 7.days), class: "flex items-center gap-1 text-gray-600 hover:text-orange-600 transition" do %>
+    次の週 <span>&rarr;</span>
+  <% end %>
+</div>
+
+  <%= line_chart @chart_data,
+      # 縦軸の設定：時間単位 (4時〜10時)
+      min: 4, 
+      max: 10,
+      suffix: "時",
+      ytitle: "時間",
+      xtitle: "日付",
+      points: true,
+      colors: ["#ea580c"],
+      height: "300px",
+      library: { 
+        spanGaps: true, # 線をつなぐ
+        scales: {
+          y: {
+            ticks: {
+              stepSize: 1 # 「時間」ごとに目盛りを打つ
+            }
+          }
+        }
+      },
+      # 黒い吹き出しの中身の設定
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: "function(context) { 
+                var v = context.parsed.y;
+                var h = Math.floor(v);         
+                var m = Math.round((v - h) * 60); 
+                return ' ' + h + ':' + ('0' + m).slice(-2); 
+              }"
+            }
+          }
+        }
+  %>
+  
+  <p class="text-xs text-gray-400 mt-2 text-right">
+    ※ 縦軸は 4:00 〜 10:00 の範囲で表示しています
+  </p>
+</div>
+
+<script>
+  // ページが表示されたら実行
+  document.addEventListener("turbo:load", function() {
+    // 画面内のすべてのChartkickグラフを探す
+    Chartkick.eachChart(function(chart) {
+      const chartInstance = chart.getChartObject();
+      if (!chartInstance) return;
+
+      // ツールチップの文字を「時間:分」に変換する設定を注入
+      chartInstance.options.plugins.tooltip.callbacks.label = function(context) {
+        // 1. グラフの縦軸の値（5.666...）を取得
+        const value = context.parsed.y;
+        
+        // 2. 「5」時間を取り出す
+        const h = Math.floor(value);
+        
+        // 3. 残りの「0.666...」を60倍して「40」分にする
+        const m = Math.round((value - h) * 60);
+        
+        // 4. 文字をつなげて「 5:40」にして返す
+        return ` ${h}:${('0' + m).slice(-2)}`;
+      };
+      
+      // 設定を反映させる
+      chartInstance.update();
+    });
+  });
+</script>

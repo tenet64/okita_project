@@ -1,0 +1,117 @@
+<%# app/views/static_pages/how_to_use.html.erb %>
+
+<div class="min-h-screen bg-[#FFFAF0] py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    
+    <%# --- 1. イントロダクション --- %>
+    <div class="text-center mb-16">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-4">
+        <span class="inline-block bg-orange-100 text-orange-700 px-4 py-1 rounded-full text-lg mb-4 font-bold">About okita!!</span><br>
+        「起きる」を、もっと楽しく。
+      </h1>
+      <div class="max-w-2xl mx-auto">
+        <p class="text-lg text-gray-600 leading-relaxed">
+          okita!! は、一人でも、仲間とでも楽しめる早起き習慣化アプリです。<br>
+          <span class="text-orange-600 font-bold bg-orange-50 px-2 rounded">「誰かが待っているから、起きられる」</span><br>
+          そんな体験をあなたに提供します。
+        </p>
+      </div>
+    </div>
+
+    <%# --- 2. 機能紹介グリッド (01〜06) --- %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+
+      <%# 01. チャレンジ作成 %>
+      <div class="bg-white rounded-3xl shadow-sm border-2 border-orange-50 p-8 relative overflow-hidden group hover:border-orange-200 hover:shadow-md transition-all">
+        <div class="absolute -right-4 -top-4 text-9xl text-orange-50 font-black opacity-50 select-none z-0 group-hover:text-orange-100 transition-colors">01</div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-3xl mb-4 text-orange-600 shadow-sm">
+            🎯
+          </div>
+          <h2 class="text-xl font-bold text-gray-800 mb-3">チャレンジ作成</h2>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            「明日7時に起きる！」など目標を決めてルームを作成します。<br>
+            自分のペースで頑張る<strong>「ソロモード」</strong>と、仲間と協力する<strong>「マルチモード」</strong>から選べます。
+          </p>
+        </div>
+      </div>
+
+      <%# 02. チーム結成 %>
+      <div class="bg-white rounded-3xl shadow-sm border-2 border-orange-50 p-8 relative overflow-hidden group hover:border-orange-200 hover:shadow-md transition-all">
+        <div class="absolute -right-4 -top-4 text-9xl text-orange-50 font-black opacity-50 select-none z-0 group-hover:text-orange-100 transition-colors">02</div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-4 text-blue-500 shadow-sm">
+            🤝
+          </div>
+          <h2 class="text-xl font-bold text-gray-800 mb-3">仲間を招待</h2>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            マルチモードで友達や家族とチームを結成しましょう。<br>
+            <span class="font-bold text-blue-500">「連帯責任」</span>が最強の目覚まし時計になります。
+          </p>
+        </div>
+      </div>
+
+      <%# 03. 起床ボタン %>
+      <div class="bg-white rounded-3xl shadow-sm border-2 border-orange-50 p-8 relative overflow-hidden group hover:border-orange-200 hover:shadow-md transition-all">
+        <div class="absolute -right-4 -top-4 text-9xl text-orange-50 font-black opacity-50 select-none z-0 group-hover:text-orange-100 transition-colors">03</div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-3xl mb-4 text-red-500 shadow-sm">
+            ⏰
+          </div>
+          <h2 class="text-xl font-bold text-gray-800 mb-3">運命の5分間</h2>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            起床ボタンが押せるのは、目標時間の<span class="font-bold text-red-500">前後5分間</span>だけ。<br>
+            時間内にボタンを押せば成功！<br>
+            マルチモードでは全員が押すまで成功になりません。
+          </p>
+        </div>
+      </div>
+
+      <%# 04. データ分析 %>
+      <div class="bg-white rounded-3xl shadow-sm border-2 border-orange-50 p-8 relative overflow-hidden group hover:border-orange-200 hover:shadow-md transition-all">
+        <div class="absolute -right-4 -top-4 text-9xl text-orange-50 font-black opacity-50 select-none z-0 group-hover:text-orange-100 transition-colors">04</div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-3xl mb-4 text-purple-500 shadow-sm">
+            📊
+          </div>
+          <h2 class="text-xl font-bold text-gray-800 mb-3">記録・分析</h2>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            「カレンダー」や「週間グラフ」で記録を確認できます。<br>
+            成功率を可視化して、<span class="font-bold text-purple-600">自分の成長</span>を実感しましょう。
+          </p>
+        </div>
+      </div>
+
+      <%# 05. ポイント獲得 %>
+      <div class="bg-white rounded-3xl shadow-sm border-2 border-orange-50 p-8 relative overflow-hidden group hover:border-orange-200 hover:shadow-md transition-all">
+        <div class="absolute -right-4 -top-4 text-9xl text-orange-50 font-black opacity-50 select-none z-0 group-hover:text-orange-100 transition-colors">05</div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-3xl mb-4 text-yellow-600 shadow-sm">
+            💰
+          </div>
+          <h2 class="text-xl font-bold text-gray-800 mb-3">ポイント機能</h2>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            早起きに成功すると1ポイントゲット！<br>
+            毎日の小さな達成感が、明日の早起きへのモチベーションに変わります。
+          </p>
+        </div>
+      </div>
+
+      <%# 06. バッジ収集 %>
+      <div class="bg-white rounded-3xl shadow-sm border-2 border-orange-50 p-8 relative overflow-hidden group hover:border-orange-200 hover:shadow-md transition-all">
+        <div class="absolute -right-4 -top-4 text-9xl text-orange-50 font-black opacity-50 select-none z-0 group-hover:text-orange-100 transition-colors">06</div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center text-3xl mb-4 text-gray-600 shadow-sm">
+            🏆
+          </div>
+          <h2 class="text-xl font-bold text-gray-800 mb-3">バッジ収集</h2>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            「3日連続成功」「早起き10回達成」など、条件をクリアして<span class="font-bold text-gray-800">限定バッジ</span>を集めてみましょう！<br>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

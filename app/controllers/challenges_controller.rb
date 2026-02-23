@@ -18,6 +18,7 @@ class ChallengesController < ApplicationController
         @participants = @challenge.participations.includes(:user)
         @challenge.finalize_recruiting_if_due!
         @challenge.refresh_status_by_logs!(date: @challenge.target_date)
+        @challenges_url = challenge_url(@challenge)
     end
 
     # GET /challenges/new

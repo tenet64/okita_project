@@ -3,7 +3,14 @@ class StaticPagesController < ApplicationController
 
   def top
   end
+<<<<<<< HEAD
   
+=======
+
+  def how_to_use
+    render :how_to_use
+  end
+>>>>>>> 46dc497a9368836cbd3ea1e9dbf1c42aeabd5d09
   def terms
     render :terms
   end

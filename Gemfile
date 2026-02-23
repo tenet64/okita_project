@@ -61,6 +61,13 @@ gem "tailwindcss-ruby", "3.4.17"
 gem "devise"
 gem "rails-i18n"
 gem "letter_opener_web", "~> 3.0"
+<<<<<<< HEAD
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem "dotenv-rails"
+=======
+gem "simple_calendar"
+gem "chartkick"
+gem "meta-tags"
+gem "rspec-rails"
+>>>>>>> 46dc497a9368836cbd3ea1e9dbf1c42aeabd5d09

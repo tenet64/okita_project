@@ -1,13 +1,17 @@
 Rails.application.routes.draw do
   get "participations/create"
   get "participations/destroy"
-  get "/mypage", to: "mypages#show", as: :mypage
   get "/terms", to: "static_pages#terms", as: :terms
   get "/privacy", to: "static_pages#privacy", as: :privacy
   get "contact", to: "static_pages#contact"
+<<<<<<< HEAD
   get 'auth/:provider/callback', to: 'sessions#create'
   get 'auth/failure', to: redirect('/')
   delete 'logout', to: 'sessions#destroy', as: 'logout'
+=======
+  get "how_to_use", to: "static_pages#how_to_use", as: :how_to_use
+
+>>>>>>> 46dc497a9368836cbd3ea1e9dbf1c42aeabd5d09
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
@@ -25,7 +29,7 @@ Rails.application.routes.draw do
 
   # ログイン後の root（ダッシュボード）
   authenticated :user do
-    root to: "challenges#index", as: :authenticated_root
+    root to: "dashboard#index", as: :authenticated_root
     get "dashboard", to: "dashboard#index", as: :dashboard
   end
 
@@ -34,7 +38,10 @@ Rails.application.routes.draw do
     resource :wake_up_logs, only: [ :create ]
   end
 
-  resource :profile, only: %i[show edit update]
+  resource :mypage, only: [ :show, :edit, :update ] do
+    get :calendar, on: :collection
+    get :graph, on: :collection
+  end
 
   # devise_for :users
   get "posts/index"

@@ -15,19 +15,17 @@
       </div>
     <% end %>
 
-    <!-- タイトル -->
     <div class="mb-4">
       <%= f.label :title, "チャレンジ名", class: "block text-sm font-medium text-gray-700 mb-1" %>
       <%= f.text_field :title, placeholder: "例）7時起きチャレンジ",
-            class: "w-full rounded border-gray-300 focus:border-orange-400 focus:ring-orange-400" %>
+            class: "w-full rounded border text-sm border-gray-300 focus:border-orange-400 focus:ring-orange-400" %>
     </div>
 
-    <!-- 説明 -->
     <div class="mb-4">
       <%= f.label :description, "説明", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.text_area :description,
+      <%= f.text_area :description, placeholder: "意気込みなどあればこちらに！",
             rows: 4,
-            class: "w-full rounded border-gray-300 focus:border-orange-400 focus:ring-orange-400" %>
+            class: "w-full rounded border border-gray-300 text-sm focus:border-orange-400 focus:ring-orange-400" %>
     </div>
 
     <div data-controller="mode-capacity">
@@ -36,7 +34,7 @@
         <%= f.select :mode,
               [["ソロ", "solo"], ["マルチ", "multi"]],
               {},
-              class: "w-full rounded border-gray-300 focus:border-orange-400 focus:ring-orange-400",
+              class: "w-full rounded border border-gray-300 focus:border-orange-400 focus:ring-orange-400",
               data: { "mode-capacity-target": "mode" } %>
       </div>
 
@@ -44,7 +42,7 @@
         <%= f.label :capacity, "メンバー（マルチのみ）", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.number_field :capacity,
               min: 2,
-              class: "w-full rounded border-gray-300 focus:border-orange-400 focus:ring-orange-400",
+              class: "w-full rounded border border-gray-300 focus:border-orange-400 focus:ring-orange-400",
               data: { "mode-capacity-target": "capacity" } %>
       </div>
     </div>
@@ -53,19 +51,18 @@
       <%= f.label :target_date, "起床日", class: "block text-sm font-medium text-gray-700 mb-1" %>
       <%= f.date_field :target_date,
             min: Date.current,
-            class: "w-full rounded border-gray-300 focus:border-orange-400 focus:ring-orange-400",
+            class: "w-full rounded border border-gray-300 focus:border-orange-400 focus:ring-orange-400",
             data: { "datetime-min-target": "date" } %>
 
       <div class="mt-4">
         <%= f.label :target_time, "起床時間", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.time_field :target_time,
-              class: "w-full rounded border-gray-300 focus:border-orange-400 focus:ring-orange-400",
+              class: "w-full rounded border border-gray-300 focus:border-orange-400 focus:ring-orange-400",
               data: { "datetime-min-target": "time" } %>
         <p class="mt-1 text-xs text-gray-500">※ 起床日が今日の場合、現在時刻より前の時間は選択できません</p>
       </div>
     </div>
 
-    <!-- 送信 -->
     <%= f.submit "チャレンジを作成",
           class: "w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600" %>
 
