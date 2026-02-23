@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="mt-6 flex justify-center">
-            <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 hover:shadow-md transition duration-150" do %>
+            <%= button_to user_google_oauth2_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 hover:shadow-md transition duration-150" do %>
               <div class="flex items-center gap-3">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="google logo" class="w-5 h-5" loading="lazy">
                 <span>Googleでログイン</span>

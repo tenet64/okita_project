@@ -1,3 +1,10 @@
+<% if flash[:alert] %>
+  <div class="custom-alert">
+    <span class="close" onclick="this.parentElement.style.display='none';">&times;</span>
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
 <div class="min-h-screen flex flex-col items-center bg-gray-50">
 
   <!-- メインブロック -->

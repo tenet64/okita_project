@@ -63,3 +63,4 @@ gem "rails-i18n"
 gem "letter_opener_web", "~> 3.0"
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
+gem "dotenv-rails"

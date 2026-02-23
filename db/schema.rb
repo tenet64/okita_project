@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_23_130139) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "challenges", force: :cascade do |t|
-    t.bigint "user_id", null: false
+  create_table "badges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description", null: false
+    t.string "image_path", null: false
+    t.string "condition_key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["condition_key"], name: "index_badges_on_condition_key", unique: true
+  end
+
+  create_table "challenges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
     t.string "title"
     t.integer "mode"
     t.integer "status", default: 0
@@ -27,9 +37,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
     t.index ["user_id"], name: "index_challenges_on_user_id"
   end
 
-  create_table "participations", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "challenge_id", null: false
+  create_table "participations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "challenge_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["challenge_id"], name: "index_participations_on_challenge_id"
@@ -37,12 +47,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
     t.index ["user_id"], name: "index_participations_on_user_id"
   end
 
-  create_table "point_transactions", force: :cascade do |t|
-    t.bigint "user_id", null: false
+  create_table "point_transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
     t.integer "points", default: 0, null: false
     t.integer "reason", null: false
     t.string "source_type", null: false
-    t.bigint "source_id", null: false
+    t.uuid "source_id", null: false
     t.date "target_date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -51,7 +61,17 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
     t.index ["user_id"], name: "index_point_transactions_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "user_badges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "badge_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["badge_id"], name: "index_user_badges_on_badge_id"
+    t.index ["user_id", "badge_id"], name: "index_user_badges_on_user_id_and_badge_id", unique: true
+    t.index ["user_id"], name: "index_user_badges_on_user_id"
+  end
+
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -61,13 +81,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.integer "total_points"
+    t.string "provider"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "wake_up_logs", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "challenge_id", null: false
+  create_table "wake_up_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "challenge_id", null: false
     t.date "target_date"
     t.datetime "pressed_at"
     t.integer "status"
@@ -82,6 +104,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_04_162733) do
   add_foreign_key "participations", "challenges"
   add_foreign_key "participations", "users"
   add_foreign_key "point_transactions", "users"
+  add_foreign_key "user_badges", "badges"
+  add_foreign_key "user_badges", "users"
   add_foreign_key "wake_up_logs", "challenges"
   add_foreign_key "wake_up_logs", "users"
 end
