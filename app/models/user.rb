@@ -10,10 +10,9 @@ class User < ApplicationRecord
   has_many :user_badges, dependent: :destroy
   has_many :badges, through: :user_badges
   devise :database_authenticatable, :registerable,
-<<<<<<< HEAD
          :recoverable, :rememberable, :validatable,
           :omniauthable, omniauth_providers: %i[google_oauth2]
-  
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.name = auth.info.name
@@ -24,8 +23,7 @@ class User < ApplicationRecord
 
   def self.create_unique_string
     SecureRandom.uuid
-=======
-         :recoverable, :rememberable, :validatable
+  end
 
   # ① 現在のストリーク（連続成功日数）を計算
   def current_streak
@@ -148,6 +146,5 @@ class User < ApplicationRecord
         [ label, nil ]
       end
     end
->>>>>>> 46dc497a9368836cbd3ea1e9dbf1c42aeabd5d09
   end
 end

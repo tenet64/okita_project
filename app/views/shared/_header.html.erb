@@ -1,33 +1,6 @@
 <header class="bg-[#FDEBD0] border-b border-gray-200" data-controller="mobile-menu">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
-<<<<<<< HEAD
-    <%# ロゴ部分 %>
-    <%= link_to authenticated_root_path, class: "flex items-center space-x-2" do %>
-      <%= image_tag "logo.svg", class: "h-8 w-8 object-contain", alt: "okita ロゴ" %>
-      <span class="text-xl font-bold text-gray-800">okita!!</span>
-    <% end %>
-
-    <%# --- PC用ナビゲーション --- %>
-    <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-orange-600">
-      <% menu_items.each do |item| %>
-        <%= link_to item[:name], item[:path], class: "hover:underline" %>
-      <% end %>
-      
-      <%# PC用ドロップダウン（ユーザー名など） %>
-      <div class="relative ml-4" data-controller="dropdown" data-action="click@window->dropdown#close">
-        <button type="button" class="flex items-center space-x-2 focus:outline-none" data-action="click->dropdown#toggle">
-          <span class="text-sm font-medium text-gray-700"><%= current_user&.name %> ▼</span>
-        </button>
-        <div data-dropdown-target="menu" class="hidden absolute right-0 top-8 w-48 rounded-md bg-white shadow-lg border border-gray-100 z-50 overflow-hidden">
-          <%= link_to "プロフィール", profile_path, class: "block px-4 py-2 text-sm hover:bg-orange-50 text-gray-700" %>
-          <div class="border-t"></div>
-
-          <%= button_to "ログアウト", logout_path, method: :delete, data: { turbo: false }, class: "w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50 bg-transparent border-0 cursor-pointer" %>
-        </div>
-      </div>
-    </nav>
-=======
     <%# --- PC用ナビゲーション (左側: ロゴ + メニュー) --- %>
     <div class="flex items-center space-x-6">
       <%# 1. ロゴ %>
@@ -52,7 +25,6 @@
       <%= link_to "マイページ", mypage_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50" %>
       <div class="border-t border-gray-100"></div>    
     </div>
->>>>>>> 46dc497a9368836cbd3ea1e9dbf1c42aeabd5d09
 
     <%# --- スマホ用ハンバーガーボタン --- %>
     <%# justify-betweenが効くように、ここをPCメニューと同じ階層に置きました %>
@@ -73,29 +45,13 @@
   <%# --- スマホ用メニュー本体 (全項目を展開して表示) --- %>
   <div data-mobile-menu-target="menu" class="hidden md:hidden border-t border-orange-200 bg-[#FFF5E6]">
     <nav class="flex flex-col p-4 space-y-3">
-<<<<<<< HEAD
-      
-      <%# 定義した配列をループして表示 %>
-      <% menu_items.each do |item| %>
-        <%= link_to item[:name], item[:path], 
-            class: "block text-gray-700 font-medium", 
-            data: { action: "click->mobile-menu#close" } %>
-      <% end %>
-      
-      <div class="border-t border-orange-200 my-2"></div>
-      
-      <div class="flex items-center justify-between">
-        <span class="text-sm text-gray-500">ログイン中: <%= current_user&.name %></span>
-      </div>
-      <%= link_to "プロフィール設定", profile_path, class: "block text-gray-700", data: { action: "click->mobile-menu#close" } %>
-
-      <%= button_to "ログアウト", logout_path, method: :delete, data: { turbo: false }, class: "w-full text-left block text-red-600 font-bold bg-transparent border-0 cursor-pointer" %>
-=======
       <%# ユーザー情報 %>
+      <% if user_signed_in? %>
       <div class="pb-2 border-b border-orange-200 mb-2">
         <p class="text-sm text-gray-500">ログイン中</p>
-        <p class="font-bold text-gray-800"><%= current_user.name %></p>
+        <p class="font-bold text-gray-800"><%= current_user&.name %></p>
       </div>
+      <% end %>
 
       <%= link_to "使い方", how_to_use_path, class: "block text-gray-700 font-medium py-1", data: { action: "click->mobile-menu#close" } %>
       <%= link_to "チャレンジを作成", new_challenge_path, class: "block text-gray-700 font-medium py-1", data: { action: "click->mobile-menu#close" } %>
@@ -108,7 +64,6 @@
 
       <%= link_to "マイページ", mypage_path, class: "block text-gray-700", data: { action: "click->mobile-menu#close" } %>
       <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "block text-red-600 font-bold" %>
->>>>>>> 46dc497a9368836cbd3ea1e9dbf1c42aeabd5d09
     </nav>
   </div>
 </header>
