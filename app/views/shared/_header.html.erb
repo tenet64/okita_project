@@ -46,10 +46,12 @@
   <div data-mobile-menu-target="menu" class="hidden md:hidden border-t border-orange-200 bg-[#FFF5E6]">
     <nav class="flex flex-col p-4 space-y-3">
       <%# ユーザー情報 %>
+      <% if user_signed_in? %>
       <div class="pb-2 border-b border-orange-200 mb-2">
         <p class="text-sm text-gray-500">ログイン中</p>
-        <p class="font-bold text-gray-800"><%= current_user.name %></p>
+        <p class="font-bold text-gray-800"><%= current_user&.name %></p>
       </div>
+      <% end %>
 
       <%= link_to "使い方", how_to_use_path, class: "block text-gray-700 font-medium py-1", data: { action: "click->mobile-menu#close" } %>
       <%= link_to "チャレンジを作成", new_challenge_path, class: "block text-gray-700 font-medium py-1", data: { action: "click->mobile-menu#close" } %>

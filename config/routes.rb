@@ -4,13 +4,17 @@ Rails.application.routes.draw do
   get "/terms", to: "static_pages#terms", as: :terms
   get "/privacy", to: "static_pages#privacy", as: :privacy
   get "contact", to: "static_pages#contact"
+  get "auth/:provider/callback", to: "sessions#create"
+  get "auth/failure", to: redirect("/")
+  delete "logout", to: "sessions#destroy", as: "logout"
   get "how_to_use", to: "static_pages#how_to_use", as: :how_to_use
 
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations",
     passwords: "users/passwords",
-    confirmations: "users/confirmations"
+    confirmations: "users/confirmations",
+    omniauth_callbacks: "users/omniauth_callbacks"
   }
 
   # 未ログイン時の root（ログイン画面）
