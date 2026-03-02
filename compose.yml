@@ -8,6 +8,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: myapp_development
       PGDATA: /var/lib/postgresql/data/pgdata
+      SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
     volumes:
       - postgresql_data:/var/lib/postgresql/data
     ports:
@@ -17,6 +18,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  chrome:
+    image: selenium/standalone-chromium:latest
+    ports:
+      - "4444:4444"  
   web:
     build:
       context: .
@@ -30,6 +35,7 @@ services:
       - node_modules:/myapp/node_modules
     environment:
       TZ: Asia/Tokyo
+      SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
     ports:
       - "3000:3000"
     depends_on:

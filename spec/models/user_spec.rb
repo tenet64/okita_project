@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'ostruct'
 
 RSpec.describe User, type: :model do
   describe 'バリデーションテスト' do
@@ -42,7 +43,8 @@ RSpec.describe User, type: :model do
     it 'ユーザーが削除されたら、紐づく「チャレンジ」も一緒に削除されること' do
       user = FactoryBot.create(:user)
       # ユーザーに紐づくチャレンジを作成
-      user.challenges.create!(title: "テスト", target_date: Date.today, target_time: Time.current + 1.hour, mode: :solo, status: :ready)
+      target_at = 2.hours.from_now
+      user.challenges.create!(title: "テスト", target_date: target_at.to_date, target_time: target_at, mode: :solo, status: :ready)
 
       # ユーザーを削除すると、Challengeの件数が -1 されることを期待
       expect { user.destroy }.to change(Challenge, :count).by(-1)
@@ -127,6 +129,123 @@ RSpec.describe User, type: :model do
         # すでに持っているので、バッジの数は一切増えない（変化しない）ことを期待
         expect { user.check_all_badges }.not_to change { user.badges.count }
       end
+    end
+  end
+
+  describe 'Googleログイン' do
+    let(:auth) do
+      OpenStruct.new(
+        provider: 'google_oauth2',
+        uid: 'oauth-uid-1',
+        info: OpenStruct.new(
+          name: 'OAuth User',
+          email: 'oauth-user@example.com'
+        )
+      )
+    end
+
+    it '該当ユーザーが存在しない場合は新規作成すること' do
+      expect { described_class.from_omniauth(auth) }.to change(described_class, :count).by(1)
+
+      user = described_class.find_by(provider: 'google_oauth2', uid: 'oauth-uid-1')
+      expect(user.name).to eq('OAuth User')
+      expect(user.email).to eq('oauth-user@example.com')
+    end
+
+    it '該当ユーザーが存在する場合は既存ユーザーを返すこと' do
+      existing = create(:user, :google_user, provider: 'google_oauth2', uid: 'oauth-uid-1', email: 'oauth-user@example.com')
+
+      expect { described_class.from_omniauth(auth) }.not_to change(described_class, :count)
+      expect(described_class.from_omniauth(auth).id).to eq(existing.id)
+    end
+  end
+
+  describe '連続起床回数' do
+    let(:user) { create(:user) }
+    let(:challenge) { create(:challenge, user: user, target_date: Date.tomorrow) }
+
+    it '今日から連続して成功している日数を返すこと' do
+      create(
+        :wake_up_log,
+        user: user,
+        challenge: challenge,
+        status: :success,
+        target_date: Date.current,
+        pressed_at: Time.zone.now.change(hour: 6, min: 10)
+      )
+      create(
+        :wake_up_log,
+        user: user,
+        challenge: challenge,
+        status: :success,
+        target_date: Date.yesterday,
+        pressed_at: 1.day.ago.change(hour: 6, min: 20)
+      )
+
+      expect(user.current_streak).to eq(2)
+    end
+  end
+
+  describe '平均起床時間' do
+    let(:user) { create(:user) }
+    let(:challenge) { create(:challenge, user: user, target_date: Date.tomorrow) }
+
+    it '直近7日間の平均起床時刻を HH:MM で返すこと' do
+      create(
+        :wake_up_log,
+        user: user,
+        challenge: challenge,
+        status: :success,
+        target_date: Date.yesterday,
+        pressed_at: 1.day.ago.change(hour: 6, min: 0)
+      )
+      create(
+        :wake_up_log,
+        user: user,
+        challenge: challenge,
+        status: :success,
+        target_date: Date.current,
+        pressed_at: Time.zone.now.change(hour: 7, min: 0)
+      )
+
+      expect(user.average_wake_up_time_last_7_days).to eq('06:30')
+    end
+  end
+
+  describe '習慣起床グラフ' do
+    let(:user) { create(:user) }
+    let(:challenge) { create(:challenge, user: user, target_date: Date.tomorrow) }
+    let(:start_date) { Date.current - 6.days }
+
+    it '7日分のラベルと起床時刻を返し、ログがない日は nil になること' do
+      day1 = start_date + 1.day
+      day2 = start_date + 3.days
+
+      create(
+        :wake_up_log,
+        user: user,
+        challenge: challenge,
+        status: :success,
+        target_date: day1,
+        pressed_at: day1.in_time_zone.change(hour: 6, min: 30)
+      )
+      create(
+        :wake_up_log,
+        user: user,
+        challenge: challenge,
+        status: :success,
+        target_date: day2,
+        pressed_at: day2.in_time_zone.change(hour: 7, min: 0)
+      )
+
+      chart = user.wake_up_time_chart(start_date)
+
+      expect(chart.size).to eq(7)
+      expect(chart.find { |label, _| label == day1.strftime('%-m/%-d') }).to eq([ day1.strftime('%-m/%-d'), 6.5 ])
+      expect(chart.find { |label, _| label == day2.strftime('%-m/%-d') }).to eq([ day2.strftime('%-m/%-d'), 7.0 ])
+
+      missing_day = start_date + 2.days
+      expect(chart.find { |label, _| label == missing_day.strftime('%-m/%-d') }).to eq([ missing_day.strftime('%-m/%-d'), nil ])
     end
   end
 end

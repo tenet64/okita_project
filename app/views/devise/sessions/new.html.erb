@@ -4,16 +4,16 @@
 
     <h1 class="text-center text-3xl font-semibold mb-8">ログイン</h1>
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name),  data: { turbo: false}, html: { class: "space-y-6" }) do |f| %>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">メールアドレス</label>
+        <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700" %>
         <%= f.email_field :email, autofocus: true, autocomplete: "email",
             class: "mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2" %>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">パスワード</label>
+        <%= f.label :password, "パスワード", class: "block text-sm font-medium text-gray-700" %>
         <%= f.password_field :password, autocomplete: "current-password",
             class: "mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2" %>
       </div>

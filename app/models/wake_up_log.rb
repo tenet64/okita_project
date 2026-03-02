@@ -2,7 +2,7 @@ class WakeUpLog < ApplicationRecord
   belongs_to :user
   belongs_to :challenge
 
-  enum status: { success: 0, failure: 1 }
+  enum :status, { success: 0, failure: 1 }
 
   # 同一ユーザーが同一チャレンジ・同一日(target_date)に複数回記録できないようにする
   validates :user_id, uniqueness: { scope: [ :challenge_id, :target_date ] }
