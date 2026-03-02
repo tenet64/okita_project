@@ -3,7 +3,7 @@ class PointTransaction < ApplicationRecord
   belongs_to :source, polymorphic: true
 
   # ポイント付与理由
-  enum reason: {
+  enum :reason, {
     solo_success: 0,
     multi_success: 1
   }

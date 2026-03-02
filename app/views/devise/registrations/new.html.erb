@@ -18,21 +18,21 @@
 
       <!-- 名前 -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">名前</label>
+        <%= f.label :name, "名前", class: "block text-sm font-medium text-gray-700" %>
         <%= f.text_field :name,
               class: "mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2" %>
       </div>
 
       <!-- メール -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">メールアドレス</label>
+        <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700" %>
         <%= f.email_field :email, autocomplete: "email",
               class: "mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2" %>
       </div>
 
       <!-- パスワード -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">パスワード</label>
+        <%= f.label :password, "パスワード", class: "block text-sm font-medium text-gray-700" %>
         <% if @minimum_password_length %>
           <p class="text-xs text-gray-500 mb-1">（最低 <%= @minimum_password_length %> 文字）</p>
         <% end %>
@@ -42,7 +42,7 @@
 
       <!-- パスワード確認 -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">パスワード確認</label>
+        <%= f.label :password_confirmation, "パスワード確認", class: "block text-sm font-medium text-gray-700" %>
         <%= f.password_field :password_confirmation, autocomplete: "new-password",
               class: "mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2" %>
       </div>
