@@ -46,5 +46,4 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
       expect(stored).not_to have_key(:extra)
     end
   end
-
 end

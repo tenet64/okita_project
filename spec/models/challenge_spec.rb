@@ -107,7 +107,7 @@ RSpec.describe Challenge, type: :model do
     let(:other_user) { FactoryBot.create(:user) }
     # 常に「明日」をターゲットにする
     let(:target_date) { Date.tomorrow }
-    
+
     let(:challenge) do
       FactoryBot.create(:challenge, user: host, target_date: target_date, target_time: Time.zone.parse("06:30:00"), mode: :solo, status: :ready)
     end

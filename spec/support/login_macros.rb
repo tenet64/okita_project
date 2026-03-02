@@ -10,13 +10,11 @@ module LoginMacros
 
     fill_in 'user_email', with: user.email
     fill_in 'user_password', with: 'password123'
-    
-    click_button 'ログイン'
-    
-    expect(page).to have_content 'ログインしました' 
-    
-    # puts "ログイン後の現在のパス: #{current_path}"
 
-    
+    click_button 'ログイン'
+
+    expect(page).to have_content 'ログインしました'
+
+    # puts "ログイン後の現在のパス: #{current_path}"
   end
 end

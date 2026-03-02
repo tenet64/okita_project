@@ -15,7 +15,7 @@ RSpec.describe 'ユーザー新規登録機能', type: :system, js: true do
         fill_in '名前', with: user.name
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: user.password
-        fill_in 'パスワード確認', with: user.password_confirmation 
+        fill_in 'パスワード確認', with: user.password_confirmation
 
         # 3. 新規登録ボタンをクリック
         click_button '新規登録'
@@ -25,7 +25,7 @@ RSpec.describe 'ユーザー新規登録機能', type: :system, js: true do
       end
     end
 
-    #登録済みのメールアドレスを入力した場合のテスト
+    # 登録済みのメールアドレスを入力した場合のテスト
     context '登録済みのメールアドレスを入力した場合' do
       before do
         FactoryBot.create(:user, email: user.email)
@@ -37,7 +37,7 @@ RSpec.describe 'ユーザー新規登録機能', type: :system, js: true do
         fill_in '名前', with: user.name
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: user.password
-        fill_in 'パスワード確認', with: user.password_confirmation 
+        fill_in 'パスワード確認', with: user.password_confirmation
 
         click_button '新規登録'
 

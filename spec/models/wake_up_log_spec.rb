@@ -12,10 +12,10 @@ RSpec.describe WakeUpLog, type: :model do
       user = FactoryBot.create(:user)
       # バリデーション回避のため「明日」で作成する
       challenge = FactoryBot.create(:challenge, user: user, target_date: Date.tomorrow)
-      
+
       # 1回目の記録
       FactoryBot.create(:wake_up_log, user: user, challenge: challenge, target_date: Date.tomorrow)
-      
+
       # 2回目の記録（エラーになることを期待）
       duplicate_log = FactoryBot.build(:wake_up_log, user: user, challenge: challenge, target_date: Date.tomorrow)
       duplicate_log.valid?
@@ -25,7 +25,7 @@ RSpec.describe WakeUpLog, type: :model do
 
   describe 'ポイント付与ロジック（grant_points）' do
     let(:host) { FactoryBot.create(:user) }
-    
+
     # 常に「明日」をターゲットにする
     let(:target_date) { Date.tomorrow }
 

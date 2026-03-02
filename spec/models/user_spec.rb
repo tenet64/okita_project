@@ -50,11 +50,11 @@ RSpec.describe User, type: :model do
       expect { user.destroy }.to change(Challenge, :count).by(-1)
     end
   end
-  
+
  describe 'インスタンスメソッドのテスト' do
     it 'total_pointsが、紐づくpoint_transactionsの合計を正しく返すこと' do
       user = FactoryBot.create(:user)
-      
+
       # 1. 2つの異なるチャレンジ（実績）を作成する
       challenge1 = FactoryBot.create(:challenge, user: user)
       challenge2 = FactoryBot.create(:challenge, user: user)
@@ -72,7 +72,7 @@ RSpec.describe User, type: :model do
   end
   describe 'バッジ獲得ロジック（check_all_badges）のテスト' do
     let(:user) { FactoryBot.create(:user) }
-    
+
     # 👈 過去日時エラー回避のため、常に「明日」を使用する
     let(:target_date) { Date.tomorrow }
 
@@ -88,7 +88,7 @@ RSpec.describe User, type: :model do
       it '成功したチャレンジが1回の場合、total_success_1 のバッジを1つ獲得すること' do
         # 成功したチャレンジを1つ作成 (target_dateを使用)
         FactoryBot.create(:challenge, user: user, status: :success, target_date: target_date)
-        
+
         # バッジが1つ増えることを期待
         expect { user.check_all_badges }.to change { user.badges.count }.by(1)
         expect(user.badges.pluck(:condition_key)).to include('total_success_1')
@@ -100,7 +100,7 @@ RSpec.describe User, type: :model do
 
         # 期待値を by(2) から by(3) に変更！
         expect { user.check_all_badges }.to change { user.badges.count }.by(3)
-        
+
         # 獲得したバッジのリストに solo_success_10 を追加！
         expect(user.badges.pluck(:condition_key)).to include('total_success_1', 'total_success_10', 'solo_success_10')
       end
@@ -120,7 +120,7 @@ RSpec.describe User, type: :model do
     describe '重複付与の防止（award_badge!）' do
       it 'すでに持っているバッジは、再度条件を満たしても二重で付与されないこと' do
         FactoryBot.create(:challenge, user: user, status: :success, target_date: target_date)
-        
+
         # 1回目の判定（ここでバッジを1つ獲得する）
         user.check_all_badges
         expect(user.badges.count).to eq 1

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'チャレンジ管理', type: :system, js:true  do
+RSpec.describe 'チャレンジ管理', type: :system, js: true  do
   include LoginMacros
   let(:user) { FactoryBot.create(:user) }
   let(:challenge) { FactoryBot.create(:challenge, user: user) }
@@ -16,13 +16,13 @@ RSpec.describe 'チャレンジ管理', type: :system, js:true  do
       # save_and_open_page
       expect(page).to have_content 'ログインもしくはアカウント登録してください。'
     end
-  end 
+  end
 
   describe 'ログイン後' do
     before do
       login(user)
     end
-        
+
     it 'チャレンジの一覧ページにアクセスできること' do
       challenge
       visit challenges_path
