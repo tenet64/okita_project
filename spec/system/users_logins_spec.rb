@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'ユーザーログイン機能', type: :system, js: true do
+RSpec.describe 'ユーザーログイン機能', type: :system do
   include LoginMacros
   let(:user) { FactoryBot.create(:user) }
 
@@ -42,13 +42,12 @@ RSpec.describe 'ユーザーログイン機能', type: :system, js: true do
     it 'ログアウトに成功し、フラッシュメッセージが表示されること' do
       # 事前にログインしておく
       login(user)
-      # マイページをクリック
-      within '.hidden.md\:block' do
-        click_link 'マイページ'
-      end
+      visit mypage_path
 
-        # ログアウトボタンをクリック
-        click_on 'ログアウト', visible: true
+      # マイページ内のログアウトリンクをクリック（ヘッダーの同名リンクと区別）
+      within('main') do
+        click_link 'ログアウト'
+      end
 
       # 画面に成功メッセージが表示されているか確認
       expect(page).to have_content 'ログアウトしました。'

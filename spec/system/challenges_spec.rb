@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'チャレンジ管理', type: :system, js: true  do
+RSpec.describe 'チャレンジ管理', type: :system do
   include LoginMacros
   let(:user) { FactoryBot.create(:user) }
   let(:challenge) { FactoryBot.create(:challenge, user: user) }

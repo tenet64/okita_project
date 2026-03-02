@@ -1,7 +1,7 @@
 require 'rails_helper'
 # ユーザーの新規登録のシステムスペックを検証する
 
-RSpec.describe 'ユーザー新規登録機能', type: :system, js: true do
+RSpec.describe 'ユーザー新規登録機能', type: :system do
   include LoginMacros
 
   describe 'ユーザー新規登録の操作' do
