@@ -67,24 +67,30 @@ RSpec.describe Challenge, type: :model do
     # タイムトラベル（時間を固定・移動する機能）を有効にする
     include ActiveSupport::Testing::TimeHelpers
 
+    let(:target_date) { Date.current + 1.day }
     let(:user) { FactoryBot.build(:user) }
     let(:challenge) do
-      # わかりやすく「今日の06:30」に設定
-      FactoryBot.build(:challenge, user: user, target_date: Date.today, target_time: Time.zone.parse("06:30:00"), status: :ready)
+      FactoryBot.build(
+        :challenge,
+        user: user,
+        target_date: target_date,
+        target_time: Time.zone.parse("#{target_date} 06:30:00"),
+        status: :ready
+      )
     end
 
     # 起床ウィンドウは target_time の前後5分（06:25:00 〜 06:35:00）
 
     it '6:24の時点では「待機中(waiting_for_wakeup?)」であること' do
       # travel_to を使うと、ブロックの中だけ時間がその時刻でストップします
-      travel_to Time.zone.parse("06:24:59") do
+      travel_to Time.zone.parse("#{target_date} 06:24:59") do
         expect(challenge.waiting_for_wakeup?).to be true
         expect(challenge.wakeup_available?).to be false
       end
     end
 
     it '6:30の時点では「起床可能(wakeup_available?)」であること' do
-      travel_to Time.zone.parse("06:30:00") do
+      travel_to Time.zone.parse("#{target_date} 06:30:00") do
         expect(challenge.waiting_for_wakeup?).to be false
         expect(challenge.wakeup_available?).to be true
         expect(challenge.wakeup_missed?).to be false
@@ -92,7 +98,7 @@ RSpec.describe Challenge, type: :model do
     end
 
     it '6:36の時点では「失敗/押しそびれ(wakeup_missed?)」であること' do
-      travel_to Time.zone.parse("06:35:01") do
+      travel_to Time.zone.parse("#{target_date} 06:35:01") do
         expect(challenge.wakeup_available?).to be false
         expect(challenge.wakeup_missed?).to be true
       end
