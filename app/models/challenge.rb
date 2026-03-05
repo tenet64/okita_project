@@ -27,6 +27,7 @@ class Challenge < ApplicationRecord
   validates :capacity, absence: true, if: :solo?
 
   before_validation :clear_capacity_for_solo
+  after_update_commit :award_badges_if_became_success
 
   # 目標日時（Time）を返す
   def target_at
@@ -246,6 +247,13 @@ class Challenge < ApplicationRecord
 end
 
   private
+
+  def award_badges_if_became_success
+    return unless saved_change_to_status?
+    return unless success?
+
+    user.check_all_badges
+  end
 
   def target_datetime_cannot_be_in_the_past
     return if target_at.blank?

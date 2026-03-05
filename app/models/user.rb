@@ -96,9 +96,9 @@ class User < ApplicationRecord
     badge = Badge.find_by(condition_key: condition_key)
     return unless badge
 
-    return if badges.exists?(id: badge.id)
-
-    user_badges.create!(badge: badge)
+    user_badges.find_or_create_by!(badge: badge)
+  rescue ActiveRecord::RecordNotUnique
+    # 同時実行で重複した場合は、ユニーク制約側で防がれているため何もしない
   end
 
   def check_total_success_badges

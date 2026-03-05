@@ -23,6 +23,7 @@ class MypagesController < ApplicationController
     @points = current_user.total_points
 
     # 5. バッジ情報
+    current_user.check_all_badges
     @badges = Badge.all.order(:created_at)
     @my_badge_ids = current_user.badges.pluck(:id)
   end
