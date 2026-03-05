@@ -69,4 +69,28 @@ RSpec.describe WakeUpLog, type: :model do
       end
     end
   end
+
+  describe 'バッジ付与連携' do
+    let(:user) { FactoryBot.create(:user) }
+    let(:target_date) { Date.tomorrow }
+    let(:solo_challenge) { FactoryBot.create(:challenge, mode: :solo, user: user, target_date: target_date, status: :ready) }
+
+    before do
+      FactoryBot.create(:badge, condition_key: 'total_success_1', name: '初めの一歩')
+    end
+
+    it 'チャレンジが success になったタイミングで total_success_1 を獲得すること' do
+      expect {
+        FactoryBot.create(
+          :wake_up_log,
+          user: user,
+          challenge: solo_challenge,
+          target_date: target_date,
+          status: :success
+        )
+      }.to change { user.badges.count }.by(1)
+
+      expect(user.badges.pluck(:condition_key)).to include('total_success_1')
+    end
+  end
 end

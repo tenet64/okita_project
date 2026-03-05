@@ -38,7 +38,7 @@ badge_data_list = [
     name: "チームプレイヤー",
     description: "マルチモードで 1回成功",
     image_path: "badges/team_player.png",
-    condition_key: "πmulti_success_1"
+    condition_key: "multi_success_1"
   },
   {
     name: "友情の証",

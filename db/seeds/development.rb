@@ -1,3 +1,4 @@
+puts " バッジデータの作成を開始します..."
 badge_data_list = [
   # --- 起床成功回数 (Total Success) ---
   {
@@ -38,7 +39,7 @@ badge_data_list = [
     name: "チームプレイヤー",
     description: "マルチモードで 1回成功",
     image_path: "badges/team_player.png",
-    condition_key: "πmulti_success_1"
+    condition_key: "multi_success_1"
   },
   {
     name: "友情の証",
@@ -59,7 +60,7 @@ end
 
 # db/seeds.rb
 
-puts "🌱 データの作成を開始します..."
+puts "🌱 ユーザーデータの作成を開始します..."
 
 # 1. ユーザー作成
 user = User.find_or_create_by!(email: "demo@example.com") do |u|
