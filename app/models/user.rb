@@ -27,10 +27,9 @@ class User < ApplicationRecord
 
   # ① 現在のストリーク（連続成功日数）を計算
   def current_streak
-    # 過去120日分のログを取得して日付ごとに成功判定
-    recent_logs = wake_up_logs.where(pressed_at: 120.days.ago.beginning_of_day..Time.current)
-    by_day = recent_logs.group_by { |l| l.pressed_at.to_date }
-    daily_success = by_day.transform_values { |arr| arr.any?(&:success?) }
+    range = 120.days.ago.to_date..Date.current
+    success_dates = wake_up_logs.success.where(target_date: range).distinct.pluck(:target_date)
+    daily_success = success_dates.each_with_object({}) { |date, hash| hash[date] = true }
 
     streak = 0
     today = Date.current
