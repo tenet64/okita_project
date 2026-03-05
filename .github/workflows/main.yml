@@ -5,6 +5,7 @@ on:
 
 env:
   RENDER_DB_URL: ${{secrets.RENDER_DB_URL}} 
+  MAIL_FROM: ${{ secrets.MAIL_FROM }}
 
 jobs:
   rspec:
