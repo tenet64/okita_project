@@ -1,25 +1,30 @@
 <%- if controller_name != 'sessions' %>
-  <%= link_to "Log in", new_session_path(resource_name) %><br />
-<% end %>
-
-<%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-  <%= link_to "Sign up", new_registration_path(resource_name) %><br />
-<% end %>
-
-<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-  <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
-<% end %>
-
-<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-  <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
-<% end %>
-
-<%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-  <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %><br />
-<% end %>
-
-<%- if devise_mapping.omniauthable? %>
-  <%- resource_class.omniauth_providers.each do |provider| %>
-    <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false } %><br />
+    <%= link_to "ログイン", new_session_path(resource_name) , class: "w-full block text-center bg-gray-800 text-white  py-3 rounded-md hover:bg-gray-900 transition font-medium"%><br />
   <% end %>
+
+  <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+    <%= link_to "新規登録", new_registration_path(resource_name) , class: "w-full block text-center bg-white border border-blue-600 text-blue-600 py-3 rounded-md hover:bg-blue-50 transition font-medium"%><br />
+  <% end %>
+
+  <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+    <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+  <% end %>
+
+  <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+    <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
+  <% end %>
+
+  <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+    <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %><br />
+  <% end %>
+
+  <%- if devise_mapping.omniauthable? %>
+    <%= button_to user_google_oauth2_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 hover:shadow-md transition duration-150" do %>
+      <div class="flex items-center gap-3">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="google logo" class="w-5 h-5" loading="lazy">
+        <span>Googleでログイン</span>
+      </div>
+    <% end %>
 <% end %>
+
+

@@ -101,14 +101,9 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   config.action_mailer.default_url_options = { host: "okita-project.onrender.com/" }
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :resend
   config.action_mailer.smtp_settings = {
-    address:              "smtp.gmail.com",
-    port:                 587,
-    domain:               "okita-project.onrender.com/",
-    user_name:            ENV["MAILER_SENDER"],
-    password:             ENV["MAILER_PASSWORD"],
-    authentication:       "plain",
-    enable_starttls_auto: true
+    host: "okitaapp.com",
+    protocol: "https"
   }
 end
