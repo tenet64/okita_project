@@ -17,36 +17,22 @@
   <% end %>
 </div>
 
-  <%= line_chart @chart_data,
+  <%= column_chart @chart_data,
       # 縦軸の設定：時間単位 (4時〜10時)
       min: 4, 
       max: 10,
       suffix: "時",
       ytitle: "時間",
       xtitle: "日付",
-      points: true,
       colors: ["#ea580c"],
       height: "300px",
       library: { 
-        spanGaps: true, # 線をつなぐ
-        scales: {
-          y: {
-            ticks: {
-              stepSize: 1 # 「時間」ごとに目盛りを打つ
-            }
-          }
-        }
-      },
-      # 黒い吹き出しの中身の設定
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: "function(context) { 
-                var v = context.parsed.y;
-                var h = Math.floor(v);         
-                var m = Math.round((v - h) * 60); 
-                return ' ' + h + ':' + ('0' + m).slice(-2); 
-              }"
+        plugins: { tooltip: { enabled: false } },
+          scales: {
+            y: {
+              ticks: {
+                stepSize: 1 # 「時間」ごとに目盛りを打つ
+              }
             }
           }
         }
@@ -56,32 +42,3 @@
     ※ 縦軸は 4:00 〜 10:00 の範囲で表示しています
   </p>
 </div>
-
-<script>
-  // ページが表示されたら実行
-  document.addEventListener("turbo:load", function() {
-    // 画面内のすべてのChartkickグラフを探す
-    Chartkick.eachChart(function(chart) {
-      const chartInstance = chart.getChartObject();
-      if (!chartInstance) return;
-
-      // ツールチップの文字を「時間:分」に変換する設定を注入
-      chartInstance.options.plugins.tooltip.callbacks.label = function(context) {
-        // 1. グラフの縦軸の値（5.666...）を取得
-        const value = context.parsed.y;
-        
-        // 2. 「5」時間を取り出す
-        const h = Math.floor(value);
-        
-        // 3. 残りの「0.666...」を60倍して「40」分にする
-        const m = Math.round((value - h) * 60);
-        
-        // 4. 文字をつなげて「 5:40」にして返す
-        return ` ${h}:${('0' + m).slice(-2)}`;
-      };
-      
-      // 設定を反映させる
-      chartInstance.update();
-    });
-  });
-</script>

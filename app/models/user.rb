@@ -128,18 +128,27 @@ class User < ApplicationRecord
     check_multi_mode_badges
   end
 
+  # 1週間の起床時間グラフ
   def wake_up_time_chart(start_date)
+    # 1週間のデータを定義
     end_date = start_date + 6.days
-    logs = wake_up_logs.where(pressed_at: start_date.beginning_of_day..end_date.end_of_day)
-    logs_by_date = logs.index_by { |log| log.pressed_at.to_date }
-
+    # 起床ボタンを押せた日だけ取得し、時刻順に並べる
+    logs = wake_up_logs
+      .where(pressed_at: start_date.beginning_of_day..end_date.end_of_day)
+      .where.not(pressed_at: nil)
+      .order(:pressed_at)
+    # 各日の最も早い起床時間だけを残す
+    first_log_by_date = logs.group_by { |log| log.pressed_at.in_time_zone.to_date }
+      .transform_values(&:first)
+    #
     (start_date..end_date).map do |date|
-      log = logs_by_date[date]
-      # X軸: 日付ラベル
+      log = first_log_by_date[date]
+      # X軸: 日付ラベル Y軸：時間ラベル
       label = date.strftime("%-m/%-d")
 
       if log
-        hours = log.pressed_at.hour + (log.pressed_at.min / 60.0)
+        pressed_at = log.pressed_at.in_time_zone
+        hours = pressed_at.hour + (pressed_at.min / 60.0)
         [ label, hours ]
       else
         [ label, nil ]
