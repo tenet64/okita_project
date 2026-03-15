@@ -65,6 +65,9 @@ https://okitaapp.com
 | データベースサーバー | PostgreSQL |
 | アプリケーションサーバー | Render |
 | バージョン管理 | GitHub・Git Flow |
+|　環境構築 | Docker Docker-compose|
+|　CI/CD | GitHub Actions|
+|　認証　|　OAuth 2.0|
 
 ### ER図
 [![ER図](https://i.gyazo.com/7b917f3e345f66a683e3bb8425d474a5.png)](https://gyazo.com/7b917f3e345f66a683e3bb8425d474a5)
