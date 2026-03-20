@@ -172,7 +172,7 @@ class Challenge < ApplicationRecord
     if solo?
       return [ user ]
     else
-    ([ user ] + participants.to_a).uniq
+    return ([ user ] + participants.to_a).uniq
     end
   end
 

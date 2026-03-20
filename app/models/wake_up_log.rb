@@ -54,7 +54,7 @@ class WakeUpLog < ApplicationRecord
       member.wake_up_logs.exists?(
         challenge_id: challenge.id,
         target_date: target_date,
-        status: WakeUpLog.status[:success]
+        status: WakeUpLog.statuses[:success]
       )
     end
     # もし全員が成功（all_success）していなければ、ここで処理を終了する
