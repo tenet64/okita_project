@@ -170,9 +170,9 @@ class Challenge < ApplicationRecord
   # ソロ: ホストのみ / マルチ: ホスト + 参加者
   def members
     if solo?
-      return [ user ]
+      [ user ]
     else
-    return ([ user ] + participants.to_a).uniq
+    ([ user ] + participants.to_a).uniq
     end
   end
 
