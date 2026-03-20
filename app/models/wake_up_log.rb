@@ -42,12 +42,13 @@ class WakeUpLog < ApplicationRecord
     # すでに付与済みなら何もしない
   end
 
-  # マルチ: 全員が成功した場合のみ、全員に「参加人数 × 1ポイント」を付与
+  # マルチ: 全員が成功した場合のみ、全員に1ポイントを付与
   def try_grant_multi_points
     # Challenge#members が「ホスト + 参加者」を返す前提
     members = challenge.members
-    n = members.size
-    return if n.zero?
+    all_member = members.size
+    # メンバーが0ならここで終了
+    return if all_member.zero?
 
     all_success = members.all? do |member|
       member.wake_up_logs.exists?(
@@ -56,6 +57,7 @@ class WakeUpLog < ApplicationRecord
         status: WakeUpLog.statuses[:success]
       )
     end
+    # もし全員が成功（all_success）していなければ、ここで処理を終了する
     return unless all_success
 
     members.each do |member|
