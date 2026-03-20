@@ -169,9 +169,11 @@ class Challenge < ApplicationRecord
 
   # ソロ: ホストのみ / マルチ: ホスト + 参加者
   def members
-    return [ user ] if solo?
-
+    if solo?
+      return [ user ]
+    else
     ([ user ] + participants.to_a).uniq
+    end
   end
 
   # 削除は起床時刻の60分前まで
