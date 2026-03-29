@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "action_area_challenge_#{@challenge.id}",
+      partial: "challenges/action_area",
+      locals: { challenge: @challenge } %>

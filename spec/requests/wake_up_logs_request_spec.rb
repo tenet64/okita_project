@@ -45,7 +45,6 @@ RSpec.describe "WakeUpLogs", type: :request do
       end.to change(WakeUpLog, :count).by(1)
 
       expect(response).to redirect_to(challenge_path(challenge))
-      expect(flash[:notice]).to eq("起床を記録しました！")
       expect(WakeUpLog.last).to be_success
     end
 

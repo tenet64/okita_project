@@ -1,5 +1,6 @@
+<%= turbo_stream_from @challenge %>
 <div class="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow space-y-8">
-
+  <div id="challenge-data" data-challenge-id="<%= @challenge.id %>">
   <%= render "challenges/summary", challenge: @challenge %>
   <%= render "challenges/participants", challenge: @challenge, participants: @participants %>
   <%= render "challenges/action_area", challenge: @challenge, participants: @participants %>
@@ -12,4 +13,5 @@
   <span>Xでシェアする</span>
   <% end %>
   </div>
+</div>
 </div>
