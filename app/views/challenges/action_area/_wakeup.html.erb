@@ -1,8 +1,8 @@
 <% case state %>
 <% when :ready_can_wake %>
-    <%= link_to "起きた！",
+    <%= button_to "起きた！",
           challenge_wake_up_logs_path(challenge),
-          data: { turbo_method: :post },
+          method: :post,
           class: "block w-full text-center bg-green-500 text-white py-2 rounded" %>
 
 <% when :ready_no_permission %>
@@ -13,7 +13,7 @@
 <% when :ready_done %>
     <p class="text-green-600 text-center">
       ✔ 起床完了
-    </p>    
+    </p>
  
  <% when :ready_missed %>
     <p class="text-sm text-red-700 text-center font-bold">

@@ -13,9 +13,9 @@
       <%= render "challenges/action_area/wakeup", challenge: challenge, state: state %>
 
 
-    <%= turbo_stream_from @challenge %>
+    <%= turbo_stream_from challenge %>
     <div class="space-y-2">
-      <% @challenge.participations.each do |p| %>
+      <% challenge.participations.each do |p| %>
         <div id="participation_<%= p.id %>">
           <%= render "challenges/action_area/status", participation: p %>
         </div>
